@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MenuButton } from "@/components/MenuButton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,8 +13,20 @@ const Submit = () => {
   const [mottoText, setMottoText] = useState("");
   const [captcha, setCaptcha] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaQuestion, setCaptchaQuestion] = useState({ num1: 0, num2: 0, answer: 0 });
   const { toast } = useToast();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
+
+  const generateCaptcha = () => {
+    const num1 = Math.floor(Math.random() * 10) + 1;
+    const num2 = Math.floor(Math.random() * 10) + 1;
+    setCaptchaQuestion({ num1, num2, answer: num1 + num2 });
+    setCaptcha("");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,12 +49,13 @@ const Submit = () => {
       return;
     }
 
-    if (captcha.toLowerCase() !== "adhd") {
+    if (parseInt(captcha) !== captchaQuestion.answer) {
       toast({
         title: "Error",
-        description: "Please answer the captcha correctly",
+        description: "Please answer the math problem correctly",
         variant: "destructive",
       });
+      generateCaptcha();
       return;
     }
 
@@ -72,6 +85,7 @@ const Submit = () => {
     setNickname("");
     setMottoText("");
     setCaptcha("");
+    generateCaptcha();
     
     setTimeout(() => navigate("/"), 1500);
   };
@@ -118,16 +132,30 @@ const Submit = () => {
 
           <div className="space-y-2">
             <Label htmlFor="captcha" className="text-lg">
-              What do the letters A-D-H-D spell?
+              Solve this to prove you're human:
             </Label>
+            <div className="flex items-center gap-4 p-6 bg-secondary border-2 border-border rounded-lg">
+              <span className="text-4xl font-handwritten">
+                {captchaQuestion.num1} + {captchaQuestion.num2} = ?
+              </span>
+            </div>
             <Input
               id="captcha"
+              type="number"
               value={captcha}
               onChange={(e) => setCaptcha(e.target.value)}
-              placeholder="Type the answer"
+              placeholder="Enter your answer"
               className="text-lg"
               required
             />
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={generateCaptcha}
+              className="text-sm"
+            >
+              Generate new problem
+            </Button>
           </div>
 
           <Button
