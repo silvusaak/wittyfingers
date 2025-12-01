@@ -29,7 +29,7 @@ const Mission = () => {
           </p>
           
           <p>
-            Each motto is a snapshot - a glimpse into how ADHD feels in a particular
+            Each submitted answer is a snapshot - a glimpse into how ADHD feels in a particular
             moment. Some days it's chaos, some days it's clarity, some days it's
             both at once.
           </p>
