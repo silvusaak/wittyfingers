@@ -96,7 +96,7 @@ const Submit = () => {
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">
         <h1 className="text-4xl md:text-6xl font-handwritten font-bold mb-8 text-center">
-          Submit Your Motto
+          Submit your thoughts
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -154,7 +154,7 @@ const Submit = () => {
               onClick={generateCaptcha}
               className="text-sm"
             >
-              Generate new problem
+              Generate new riddle
             </Button>
           </div>
 
