@@ -43,7 +43,7 @@ export const MenuButton = () => {
         </SheetTrigger>
       <SheetContent className="w-full sm:w-[400px] bg-card">
         <SheetHeader>
-          <SheetTitle className="text-2xl font-handwritten">Menu</SheetTitle>
+          <SheetTitle className="text-4xl font-handwritten">Menu</SheetTitle>
         </SheetHeader>
         <nav className="flex flex-col gap-4 mt-8">
           <Button
