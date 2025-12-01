@@ -92,18 +92,22 @@ const Submit = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <button
-        onClick={() => navigate("/")}
-        className="fixed top-4 left-4 z-50 hover:opacity-80 transition-opacity"
-        aria-label="Return to home"
-      >
-        <img src={wtfLogo} alt="WTF Logo" className="w-20 h-20 md:w-28 md:h-28" />
-      </button>
+    <div className="min-h-screen bg-background relative">
+      <div className="absolute top-4 left-4 z-50">
+        <button
+          onClick={() => navigate("/")}
+          className="hover:opacity-80 transition-opacity"
+          aria-label="Return to home"
+        >
+          <img src={wtfLogo} alt="WTF Logo" className="w-20 h-20 md:w-28 md:h-28" />
+        </button>
+      </div>
       
-      <MenuButton />
+      <div className="absolute top-4 right-4 z-50">
+        <MenuButton />
+      </div>
 
-      <div className="container mx-auto px-4 py-12 max-w-2xl">
+      <div className="container mx-auto px-4 pt-32 md:pt-40 pb-12 max-w-2xl">
         <h1 className="text-4xl md:text-6xl font-serious font-bold mb-8 text-center">
           Submit your thoughts
         </h1>
