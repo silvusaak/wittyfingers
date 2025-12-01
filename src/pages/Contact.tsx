@@ -1,8 +1,20 @@
 import { MenuButton } from "@/components/MenuButton";
+import { useNavigate } from "react-router-dom";
+import wtfLogo from "@/assets/wtf-logo.png";
 
 const Contact = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-background">
+      <button
+        onClick={() => navigate("/")}
+        className="fixed top-4 left-4 z-50 hover:opacity-80 transition-opacity"
+        aria-label="Return to home"
+      >
+        <img src={wtfLogo} alt="WTF Logo" className="w-12 h-12 md:w-16 md:h-16" />
+      </button>
+      
       <MenuButton />
 
       <div className="container mx-auto px-4 py-12 max-w-3xl">
