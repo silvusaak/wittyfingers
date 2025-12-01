@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        handwritten: ['Dekko', 'cursive'],
-        elegant: ['Dekko', 'cursive']
+        handwritten: ['Yantiq', 'cursive'],
+        elegant: ['Yantiq', 'cursive']
       },
       colors: {
         border: "hsl(var(--border))",
