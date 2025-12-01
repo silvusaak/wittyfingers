@@ -6,13 +6,13 @@ const Contact = () => {
       <MenuButton />
 
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <h1 className="text-4xl md:text-6xl font-handwritten font-bold mb-8 text-center">
+        <h1 className="text-5xl md:text-7xl font-handwritten font-extrabold mb-8 text-center">
           Contact & Disclaimer
         </h1>
 
         <div className="space-y-8">
           <section className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-handwritten font-bold">
+            <h2 className="text-3xl md:text-4xl font-handwritten font-extrabold">
               Disclaimer
             </h2>
             <div className="text-lg md:text-xl leading-relaxed space-y-4 font-serious">
@@ -33,7 +33,7 @@ const Contact = () => {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-2xl md:text-3xl font-handwritten font-bold">
+            <h2 className="text-3xl md:text-4xl font-handwritten font-extrabold">
               Contact
             </h2>
             <div className="text-lg md:text-xl leading-relaxed font-serious">
