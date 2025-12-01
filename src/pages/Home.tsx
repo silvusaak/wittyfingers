@@ -8,13 +8,15 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <button
-        onClick={() => navigate("/")}
-        className="fixed top-4 left-4 z-50 hover:opacity-80 transition-opacity"
-        aria-label="Return to home"
-      >
-        <img src={wtfLogo} alt="WTF Logo" className="w-12 h-12 md:w-16 md:h-16" />
-      </button>
+      <div className="w-full bg-muted/30 border-b border-border py-4 px-4">
+        <button
+          onClick={() => navigate("/")}
+          className="hover:opacity-80 transition-opacity"
+          aria-label="Return to home"
+        >
+          <img src={wtfLogo} alt="WTF Logo" className="w-20 h-20 md:w-24 md:h-24" />
+        </button>
+      </div>
       
       <MenuButton />
       
