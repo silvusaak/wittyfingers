@@ -12,7 +12,7 @@ const Contact = () => {
         className="fixed top-4 left-4 z-50 hover:opacity-80 transition-opacity"
         aria-label="Return to home"
       >
-        <img src={wtfLogo} alt="WTF Logo" className="w-12 h-12 md:w-16 md:h-16" />
+        <img src={wtfLogo} alt="WTF Logo" className="w-20 h-20 md:w-28 md:h-28" />
       </button>
       
       <MenuButton />
