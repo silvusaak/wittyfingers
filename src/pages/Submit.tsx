@@ -72,7 +72,7 @@ const Submit = () => {
     if (error) {
       toast({
         title: "Error",
-        description: "Failed to submit motto. Please try again.",
+        description: "This didn't work, let's try again",
         variant: "destructive",
       });
       return;
