@@ -107,7 +107,7 @@ const Submit = () => {
               id="motto"
               value={mottoText}
               onChange={(e) => setMottoText(e.target.value)}
-              placeholder="Share your moment..."
+              placeholder="Share your experience"
               className="min-h-[200px] text-lg resize-none"
               maxLength={10000}
             />
