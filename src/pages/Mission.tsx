@@ -6,11 +6,11 @@ const Mission = () => {
       <MenuButton />
       
       <div className="container mx-auto px-4 py-12 max-w-3xl">
-        <h1 className="text-4xl md:text-6xl font-handwritten font-bold mb-8 text-center">
+        <h1 className="text-5xl md:text-7xl font-serious font-extrabold mb-8 text-center">
           Mission
         </h1>
         
-        <div className="space-y-6 text-lg md:text-xl leading-relaxed">
+        <div className="space-y-6 text-lg md:text-xl leading-relaxed font-handwritten">
           <p>
             This space exists to capture the fleeting, often contradictory moments
             of living with ADHD.
