@@ -144,11 +144,11 @@ const Submit = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="captcha" className="text-base font-serious">
+            <Label htmlFor="captcha" className="text-sm font-serious">
               Solve this to prove you're human:
             </Label>
-            <div className="flex items-center gap-4 p-4 bg-secondary border border-border rounded-lg">
-              <span className="text-2xl font-handwritten">
+            <div className="flex items-center gap-3 p-3 bg-secondary border border-border rounded">
+              <span className="text-lg font-handwritten">
                 {captchaQuestion.num1} + {captchaQuestion.num2} = ?
               </span>
             </div>
@@ -158,14 +158,14 @@ const Submit = () => {
               value={captcha}
               onChange={(e) => setCaptcha(e.target.value)}
               placeholder="Enter your answer"
-              className="text-base"
+              className="text-sm h-9"
               required
             />
             <Button
               type="button"
               variant="ghost"
               onClick={generateCaptcha}
-              className="text-xs"
+              className="text-xs h-7"
             >
               Generate a new question
             </Button>
