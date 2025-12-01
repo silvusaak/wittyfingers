@@ -38,13 +38,6 @@ export const MenuButton = () => {
           <Button
             variant="ghost"
             className="text-xl font-handwritten justify-start h-auto py-4"
-            onClick={() => handleNavigation("/")}
-          >
-            Home
-          </Button>
-          <Button
-            variant="ghost"
-            className="text-xl font-handwritten justify-start h-auto py-4"
             onClick={() => handleNavigation("/mission")}
           >
             Mission

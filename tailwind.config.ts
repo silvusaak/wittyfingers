@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        handwritten: ['Caveat', 'Indie Flower', 'cursive'],
-        indie: ['Indie Flower', 'cursive']
+        handwritten: ['Satisfy', 'Alex Brush', 'cursive'],
+        elegant: ['Alex Brush', 'cursive']
       },
       colors: {
         border: "hsl(var(--border))",
