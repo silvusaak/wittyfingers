@@ -154,7 +154,7 @@ const Submit = () => {
               onClick={generateCaptcha}
               className="text-sm"
             >
-              Generate new riddle
+              Generate a new question
             </Button>
           </div>
 
