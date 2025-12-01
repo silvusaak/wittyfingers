@@ -15,7 +15,8 @@ export default {
     extend: {
       fontFamily: {
         handwritten: ['Shadows Into Light', 'cursive'],
-        elegant: ['Shadows Into Light', 'cursive']
+        elegant: ['Shadows Into Light', 'cursive'],
+        serious: ['Rock Salt', 'cursive']
       },
       colors: {
         border: "hsl(var(--border))",
