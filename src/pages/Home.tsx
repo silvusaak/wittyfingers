@@ -19,7 +19,7 @@ const Home = () => {
       <MenuButton />
       
       <header className="pt-12 pb-6 px-4 text-center">
-        <h1 className="text-3xl md:text-5xl lg:text-6xl font-handwritten font-bold">
+        <h1 className="text-3xl md:text-5xl lg:text-6xl font-serious font-bold">
           What ADHD feels like today...
         </h1>
       </header>
