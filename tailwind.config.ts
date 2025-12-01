@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        handwritten: ['Satisfy', 'Alex Brush', 'cursive'],
-        elegant: ['Alex Brush', 'cursive']
+        handwritten: ['Dekko', 'cursive'],
+        elegant: ['Dekko', 'cursive']
       },
       colors: {
         border: "hsl(var(--border))",
