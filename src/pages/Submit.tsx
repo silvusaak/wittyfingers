@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import wtfLogo from "@/assets/wtf-logo.png";
 
 const Submit = () => {
   const [nickname, setNickname] = useState("");
@@ -92,6 +93,14 @@ const Submit = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <button
+        onClick={() => navigate("/")}
+        className="fixed top-4 left-4 z-50 hover:opacity-80 transition-opacity"
+        aria-label="Return to home"
+      >
+        <img src={wtfLogo} alt="WTF Logo" className="w-12 h-12 md:w-16 md:h-16" />
+      </button>
+      
       <MenuButton />
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">
