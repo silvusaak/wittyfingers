@@ -104,13 +104,13 @@ const Submit = () => {
       <MenuButton />
 
       <div className="container mx-auto px-4 py-12 max-w-2xl">
-        <h1 className="text-4xl md:text-6xl font-handwritten font-bold mb-8 text-center">
+        <h1 className="text-4xl md:text-6xl font-serious font-bold mb-8 text-center">
           Submit your thoughts
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="nickname" className="text-lg">
+            <Label htmlFor="nickname" className="text-lg font-serious">
               Nickname (optional)
             </Label>
             <Input
@@ -123,7 +123,7 @@ const Submit = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="motto" className="text-lg">
+            <Label htmlFor="motto" className="text-lg font-serious">
               What ADHD feels like today...
             </Label>
             <Textarea
@@ -140,7 +140,7 @@ const Submit = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="captcha" className="text-lg">
+            <Label htmlFor="captcha" className="text-lg font-serious">
               Solve this to prove you're human:
             </Label>
             <div className="flex items-center gap-4 p-6 bg-secondary border-2 border-border rounded-lg">
