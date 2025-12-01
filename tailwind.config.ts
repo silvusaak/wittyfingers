@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        handwritten: ['Yantiq', 'cursive'],
-        elegant: ['Yantiq', 'cursive']
+        handwritten: ['Shadows Into Light', 'cursive'],
+        elegant: ['Shadows Into Light', 'cursive']
       },
       colors: {
         border: "hsl(var(--border))",
