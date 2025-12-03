@@ -10,10 +10,11 @@ const Contact = () => {
       <div className="absolute top-4 left-4 z-50">
         <button
           onClick={() => navigate("/")}
-          className="hover:opacity-80 transition-opacity"
+          className="hover:opacity-80 transition-opacity flex flex-col items-center"
           aria-label="Return to home"
         >
           <img src={wtfLogo} alt="WTF Logo" className="w-20 h-20 md:w-28 md:h-28" />
+          <span className="text-xs md:text-sm font-handwritten text-muted-foreground">wittyfingers.com</span>
         </button>
       </div>
       
