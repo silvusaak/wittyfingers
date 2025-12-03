@@ -87,17 +87,17 @@ export default {
         },
         "scroll-up": {
           "0%": {
-            transform: "translateY(100%)",
+            transform: "translateY(50%) rotateX(25deg)",
             opacity: "0",
           },
-          "10%": {
+          "15%": {
             opacity: "1",
           },
-          "90%": {
+          "85%": {
             opacity: "1",
           },
           "100%": {
-            transform: "translateY(-100%)",
+            transform: "translateY(-50%) rotateX(25deg)",
             opacity: "0",
           },
         },
@@ -105,7 +105,7 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "scroll-up": "scroll-up 30s linear forwards",
+        "scroll-up": "scroll-up 8s linear forwards",
       },
     },
   },
