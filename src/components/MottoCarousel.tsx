@@ -99,19 +99,12 @@ export const MottoCarousel = () => {
       >
         <div className="text-center max-w-3xl px-8 space-y-6">
           <p className="text-4xl md:text-5xl lg:text-6xl leading-relaxed">
-            [{currentMotto.motto_text}]
+            {currentMotto.motto_text}
           </p>
-          <div className="flex flex-col items-center gap-2 text-xl md:text-2xl text-muted-foreground">
-            <div className="flex items-center gap-4">
-              <span>#{currentMotto.number}</span>
-              <span>•</span>
-              <span>{currentMotto.nickname || 'anonymous'}</span>
-            </div>
-            <span className="text-lg md:text-xl">
-              {currentMotto.created_at 
-                ? format(new Date(currentMotto.created_at), "MMMM d, yyyy 'at' HH:mm")
-                : ''}
-            </span>
+          <div className="text-xl md:text-2xl text-muted-foreground">
+            [#{currentMotto.number} • {currentMotto.nickname || 'anonymous'} • {currentMotto.created_at 
+              ? format(new Date(currentMotto.created_at), "MMMM d, yyyy 'at' HH:mm")
+              : ''}]
           </div>
         </div>
       </div>
