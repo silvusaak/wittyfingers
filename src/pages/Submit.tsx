@@ -65,15 +65,34 @@ const Submit = () => {
     // Get user's timezone
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const { error } = await supabase.from("mottos").insert({
-      nickname: nickname.trim() || "anonymous",
-      motto_text: mottoText.trim(),
-      timezone: timezone,
-    });
+    try {
+      const { data, error } = await supabase.functions.invoke('submit-motto', {
+        body: {
+          nickname: nickname.trim() || "anonymous",
+          motto_text: mottoText.trim(),
+          timezone: timezone,
+          captcha_num1: captchaQuestion.num1,
+          captcha_num2: captchaQuestion.num2,
+          captcha_answer: parseInt(captcha),
+        },
+      });
 
-    setIsSubmitting(false);
+      setIsSubmitting(false);
 
-    if (error) {
+      if (error || data?.error) {
+        const errorMessage = data?.error || "This didn't work, let's try again";
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+        if (errorMessage.includes('captcha') || errorMessage.includes('Incorrect')) {
+          generateCaptcha();
+        }
+        return;
+      }
+    } catch (err) {
+      setIsSubmitting(false);
       toast({
         title: "Error",
         description: "This didn't work, let's try again",
