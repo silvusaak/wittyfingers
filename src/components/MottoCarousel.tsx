@@ -13,6 +13,7 @@ interface Motto {
 export const MottoCarousel = () => {
   const [mottos, setMottos] = useState<Motto[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     fetchMottos();
@@ -51,14 +52,26 @@ export const MottoCarousel = () => {
   };
 
   useEffect(() => {
-    if (mottos.length === 0) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        setIsPaused(prev => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (mottos.length === 0 || isPaused) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % mottos.length);
     }, 8000);
 
     return () => clearInterval(interval);
-  }, [mottos.length]);
+  }, [mottos.length, isPaused]);
 
   if (mottos.length === 0) {
     return (
@@ -77,10 +90,11 @@ export const MottoCarousel = () => {
     >
       <div
         key={currentMotto.id}
-        className="absolute inset-0 flex items-center justify-center animate-crawl"
+        className={`absolute inset-0 flex items-center justify-center ${isPaused ? '' : 'animate-crawl'}`}
         style={{
           transformStyle: 'preserve-3d',
           transformOrigin: '50% 100%',
+          transform: isPaused ? 'rotateX(25deg)' : undefined,
         }}
       >
         <div className="text-center max-w-3xl px-8 space-y-6">
@@ -101,6 +115,11 @@ export const MottoCarousel = () => {
           </div>
         </div>
       </div>
+      {isPaused && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-muted-foreground">
+          Paused - Press Space to resume
+        </div>
+      )}
     </div>
   );
 };
