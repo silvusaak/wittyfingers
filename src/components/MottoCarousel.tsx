@@ -70,13 +70,12 @@ export const MottoCarousel = () => {
   const currentMotto = mottos[currentIndex];
 
   return (
-    <div className="relative w-full h-full overflow-hidden perspective-1000">
+    <div className="relative w-full h-full overflow-hidden" style={{ perspective: '1000px' }}>
       <div
         key={currentMotto.id}
         className="absolute inset-0 flex flex-col items-center justify-center animate-scroll-up"
         style={{
           transformOrigin: 'center bottom',
-          transform: 'rotateX(25deg)',
         }}
       >
         <div className="text-center max-w-3xl px-8 space-y-6">
