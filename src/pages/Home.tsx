@@ -28,7 +28,7 @@ const Home = () => {
         </h1>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="flex-1 container mx-auto px-4 py-8 min-h-[50vh]">
         <MottoCarousel />
       </main>
     </div>
