@@ -11,6 +11,44 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT = 3; // max submissions per window
 const RATE_WINDOW = 60 * 60 * 1000; // 1 hour in milliseconds
 
+// Offensive words filter (lowercase)
+const BLOCKED_WORDS = [
+  'fuck', 'shit', 'ass', 'bitch', 'damn', 'cunt', 'dick', 'cock', 'pussy',
+  'nigger', 'faggot', 'retard', 'slut', 'whore', 'bastard', 'asshole',
+  'motherfucker', 'bullshit', 'piss', 'crap'
+];
+
+// Spam patterns (regex)
+const SPAM_PATTERNS = [
+  /https?:\/\/[^\s]+/gi,           // URLs
+  /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g, // Email addresses
+  /(.)\1{4,}/g,                     // Repeated characters (5+)
+  /buy now|click here|free money|earn \$|bitcoin|crypto|viagra|casino/gi, // Common spam phrases
+  /\d{10,}/g,                       // Phone numbers (10+ digits)
+];
+
+function containsOffensiveContent(text: string): { blocked: boolean; reason?: string } {
+  const lowerText = text.toLowerCase();
+  
+  // Check for blocked words
+  for (const word of BLOCKED_WORDS) {
+    // Match whole words only
+    const regex = new RegExp(`\\b${word}\\b`, 'i');
+    if (regex.test(lowerText)) {
+      return { blocked: true, reason: 'Contains inappropriate language' };
+    }
+  }
+  
+  // Check for spam patterns
+  for (const pattern of SPAM_PATTERNS) {
+    if (pattern.test(text)) {
+      return { blocked: true, reason: 'Contains spam content' };
+    }
+  }
+  
+  return { blocked: false };
+}
+
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const record = rateLimitMap.get(ip);
@@ -51,7 +89,17 @@ serve(async (req) => {
       );
     }
 
-    const { nickname, motto_text, timezone, captcha_num1, captcha_num2, captcha_answer } = await req.json();
+    const { nickname, motto_text, timezone, captcha_num1, captcha_num2, captcha_answer, website } = await req.json();
+
+    // Honeypot check - if 'website' field is filled, it's a bot
+    if (website && website.trim().length > 0) {
+      console.log(`Honeypot triggered from IP: ${clientIP}`);
+      // Silently "succeed" to fool the bot
+      return new Response(
+        JSON.stringify({ success: true }),
+        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Validate required fields
     if (!motto_text || typeof motto_text !== 'string' || motto_text.trim().length === 0) {
@@ -66,6 +114,27 @@ serve(async (req) => {
         JSON.stringify({ error: 'Motto must be less than 10,000 characters' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
+    }
+
+    // Check for offensive content in motto and nickname
+    const mottoCheck = containsOffensiveContent(motto_text);
+    if (mottoCheck.blocked) {
+      console.log(`Content blocked from IP ${clientIP}: ${mottoCheck.reason}`);
+      return new Response(
+        JSON.stringify({ error: mottoCheck.reason }),
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    if (nickname) {
+      const nicknameCheck = containsOffensiveContent(nickname);
+      if (nicknameCheck.blocked) {
+        console.log(`Nickname blocked from IP ${clientIP}: ${nicknameCheck.reason}`);
+        return new Response(
+          JSON.stringify({ error: 'Nickname ' + nicknameCheck.reason?.toLowerCase() }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
     }
 
     // Validate captcha server-side
