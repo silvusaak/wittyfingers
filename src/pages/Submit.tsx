@@ -13,6 +13,7 @@ const Submit = () => {
   const [nickname, setNickname] = useState("");
   const [mottoText, setMottoText] = useState("");
   const [captcha, setCaptcha] = useState("");
+  const [website, setWebsite] = useState(""); // Honeypot field
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaQuestion, setCaptchaQuestion] = useState({ num1: 0, num2: 0, answer: 0 });
   const { toast } = useToast();
@@ -74,6 +75,7 @@ const Submit = () => {
           captcha_num1: captchaQuestion.num1,
           captcha_num2: captchaQuestion.num2,
           captcha_answer: parseInt(captcha),
+          website: website, // Honeypot field
         },
       });
 
@@ -137,6 +139,20 @@ const Submit = () => {
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Honeypot field - hidden from users, bots will fill it */}
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+            />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="nickname" className="text-lg font-serious">
               Nickname (optional)
