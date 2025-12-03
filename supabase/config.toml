@@ -1,1 +1,4 @@
 project_id = "cznvrcbeudiexenvogpu"
+
+[functions.submit-motto]
+verify_jwt = false
