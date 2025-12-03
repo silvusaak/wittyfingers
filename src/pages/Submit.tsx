@@ -62,9 +62,13 @@ const Submit = () => {
 
     setIsSubmitting(true);
 
+    // Get user's timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
     const { error } = await supabase.from("mottos").insert({
       nickname: nickname.trim() || "anonymous",
       motto_text: mottoText.trim(),
+      timezone: timezone,
     });
 
     setIsSubmitting(false);
