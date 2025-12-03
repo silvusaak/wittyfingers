@@ -21,6 +21,7 @@ export type Database = {
           motto_text: string
           nickname: string | null
           number: number
+          timezone: string | null
         }
         Insert: {
           created_at?: string | null
@@ -28,6 +29,7 @@ export type Database = {
           motto_text: string
           nickname?: string | null
           number?: number
+          timezone?: string | null
         }
         Update: {
           created_at?: string | null
@@ -35,6 +37,7 @@ export type Database = {
           motto_text?: string
           nickname?: string | null
           number?: number
+          timezone?: string | null
         }
         Relationships: []
       }
