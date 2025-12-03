@@ -104,8 +104,8 @@ export const MottoCarousel = () => {
           </p>
           <div className="text-xl md:text-2xl text-muted-foreground">
             #{currentMotto.number} • {currentMotto.nickname || 'anonymous'} • [{currentMotto.created_at 
-              ? format(new Date(currentMotto.created_at), "MMMM d, yyyy 'at' HH:mm")
-              : ''}] {currentMotto.timezone || ''}
+              ? format(new Date(currentMotto.created_at), "MMMM d")
+              : ''}{currentMotto.timezone ? `, ${currentMotto.timezone}` : ''}]
           </div>
         </div>
       </div>
