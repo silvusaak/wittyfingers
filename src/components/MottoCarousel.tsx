@@ -124,10 +124,10 @@ export const MottoCarousel = () => {
   return (
     <div className="relative w-full h-[60vh] overflow-hidden star-wars-container">
       {/* Fade overlay at top */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-32 z-10 pointer-events-none"
+      <div
+        className="absolute top-0 left-0 right-0 h-16 z-10 pointer-events-none"
         style={{
-          background: "linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)"
+          background: "linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)",
         }}
       />
       
