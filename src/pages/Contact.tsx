@@ -23,16 +23,16 @@ const Contact = () => {
       </div>
 
       <div className="container mx-auto px-4 pt-32 md:pt-40 pb-12 max-w-3xl">
-        <h1 className="text-5xl md:text-7xl font-handwritten font-extrabold mb-8 text-center">
+        <h1 className="text-5xl md:text-7xl font-serious font-extrabold mb-8 text-center">
           Contact & Disclaimer
         </h1>
 
-        <div className="space-y-8">
+        <div className="space-y-8 text-lg md:text-xl leading-relaxed font-handwritten">
           <section className="space-y-4">
-            <h2 className="text-3xl md:text-4xl font-handwritten font-extrabold">
+            <h2 className="text-3xl md:text-4xl font-serious font-extrabold">
               Disclaimer
             </h2>
-            <div className="text-lg md:text-xl leading-relaxed space-y-4 font-serious">
+            <div className="space-y-4">
               <p>
                 This website is a creative space for sharing personal experiences
                 related to ADHD. The mottos shared here are individual perspectives
@@ -50,10 +50,10 @@ const Contact = () => {
           </section>
 
           <section className="space-y-4">
-            <h2 className="text-3xl md:text-4xl font-handwritten font-extrabold">
+            <h2 className="text-3xl md:text-4xl font-serious font-extrabold">
               Contact
             </h2>
-            <div className="text-lg md:text-xl leading-relaxed font-serious">
+            <div>
               <p>
                 For questions, concerns, or feedback about this project, please
                 reach out through appropriate channels.
