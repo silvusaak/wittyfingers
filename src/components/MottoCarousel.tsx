@@ -117,6 +117,25 @@ export const MottoCarousel = () => {
     </div>
   );
 
+  // Loop divider component
+  const LoopDivider = () => (
+    <div className="flex items-center justify-center my-16 px-8">
+      <svg
+        viewBox="0 0 200 30"
+        className="w-48 md:w-64 h-8 text-muted-foreground/50"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <path
+          d="M0,15 Q50,0 100,15 T200,15"
+          strokeLinecap="round"
+        />
+        <circle cx="100" cy="15" r="4" fill="currentColor" stroke="none" />
+      </svg>
+    </div>
+  );
+
   // Create a seamless loop by duplicating content
   const allItems = [...mottos, ...mottos];
 
@@ -153,12 +172,12 @@ export const MottoCarousel = () => {
               animationPlayState: isPaused ? "paused" : "running",
             }}
           >
-            {allItems.map((m, index) => (
-              <MottoItem
-                key={`${index < mottos.length ? "" : "dup-"}${m.id}`}
-                m={m}
-                keyPrefix={index < mottos.length ? "" : "dup-"}
-              />
+            {mottos.map((m) => (
+              <MottoItem key={m.id} m={m} />
+            ))}
+            <LoopDivider />
+            {mottos.map((m) => (
+              <MottoItem key={`dup-${m.id}`} m={m} keyPrefix="dup-" />
             ))}
           </div>
         </div>
