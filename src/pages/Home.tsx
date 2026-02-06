@@ -1,10 +1,27 @@
+import { useEffect } from "react";
 import { MottoCarousel } from "@/components/MottoCarousel";
 import { MenuButton } from "@/components/MenuButton";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import wtfLogo from "@/assets/wtf-logo.png";
 
 const Home = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      toast("Want to share your thoughts?", {
+        description: "Submit here!",
+        action: {
+          label: "Submit",
+          onClick: () => navigate("/submit"),
+        },
+        duration: 8000,
+      });
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [navigate]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background relative">
