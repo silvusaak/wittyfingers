@@ -42,7 +42,11 @@ const Mission = () => {
             </p>
 
             <p>
-              I do not consider ADHD a disfunction, disorder or anything to fix per se. I am trying to find balance between symptoms, its impacts, needed rest and use of superpowers. ADHD also brought me a lot of WTF moments, some hilarious, some scary, some not so good, some teaching me a lesson, some absolutely epic, but always categorized as unexpected special case. As being alone in all this sucks, I started this page to be able to brain dump, plain and simple, no advices, no resources, just people living with the same condition.
+              I do not consider ADHD a disfunction, disorder or anything to fix per se. I am trying to find balance between symptoms, its impacts, needed rest and use of superpowers.
+            </p>
+
+            <p>
+              ADHD also brought me a lot of WTF moments, some hilarious, some scary, some not so good, some teaching me a lesson, some absolutely epic, but always categorized as unexpected special case. As being alone in all this sucks, I started this page to be able to brain dump, plain and simple, no advices, no resources, just people living with the same condition.
             </p>
           </div>
 
