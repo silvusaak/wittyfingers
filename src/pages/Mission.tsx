@@ -49,7 +49,7 @@ const Mission = () => {
           {/* Extra separation ("three empty lines") before Mission */}
           <div className="h-14 md:h-20" aria-hidden="true" />
 
-          <h2 className="text-3xl md:text-5xl font-serious font-extrabold mb-12 md:mb-16 text-center">
+          <h2 className="text-3xl md:text-5xl font-serious font-extrabold mb-6 md:mb-8 text-center">
             Mission
           </h2>
 
