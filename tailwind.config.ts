@@ -113,10 +113,10 @@ export default {
         },
         "crawl-stream": {
           "0%": {
-            transform: "translateY(20%)",
+            transform: "translateY(0)",
           },
           "100%": {
-            transform: "translateY(-30%)",
+            transform: "translateY(-50%)",
           },
         },
       },
