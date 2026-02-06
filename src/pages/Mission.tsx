@@ -29,6 +29,24 @@ const Mission = () => {
         
         <div className="space-y-6 text-lg md:text-xl leading-relaxed font-handwritten">
           <p>
+            Hi, my name is Silvie and I have ADHD. I was diagnosed when I was 30 years old.
+          </p>
+          
+          <p>
+            My school years were full of annoyance and reprimanding anything I have done, which slowly over the years led to spiral of problems and unhealthy coping mechanisms.
+          </p>
+          
+          <p>
+            Now I am trying to grow my self-esteem back, learning to drill out the best ADHD has to offer while taking care of my body.
+          </p>
+          
+          <p>
+            I do not consider ADHD a disfunction, disorder or anything to fix per se. I am trying to find balance between symptoms, its impacts, needed rest and use of superpowers. As being alone in all this sucks, I started this page to be able to brain dump, plain and simple, no advices, no resources, just people living with the same condition.
+          </p>
+          
+          <div className="border-t border-muted-foreground/30 my-8"></div>
+          
+          <p>
             This space exists to capture the fleeting, often contradictory moments
             of living with ADHD.
           </p>
