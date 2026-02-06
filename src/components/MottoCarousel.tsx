@@ -185,7 +185,7 @@ export const MottoCarousel = () => {
 
       {isPaused && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-2xl md:text-3xl text-yellow-500 z-20">
-          Paused - Press Space to resume
+          paused - press space to resume
         </div>
       )}
     </div>
