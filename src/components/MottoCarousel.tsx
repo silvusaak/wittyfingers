@@ -29,7 +29,10 @@ export const MottoCarousel = () => {
           schema: 'public',
           table: 'mottos'
         },
-        () => fetchMottos()
+        (payload) => {
+          // Add new motto to state without refetching
+          setMottos((prevMottos) => [payload.new as Motto, ...prevMottos]);
+        }
       )
       .subscribe();
 
