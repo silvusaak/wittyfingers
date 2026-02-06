@@ -46,7 +46,10 @@ const Mission = () => {
           </p>
           
           <p>
-            This is not about defining ADHD. It's about acknowledging its many
+            This is not about defining ADHD.
+          </p>
+          <p>
+            It's about acknowledging its many
             faces and finding solidarity in shared experiences.
           </p>
         </div>
