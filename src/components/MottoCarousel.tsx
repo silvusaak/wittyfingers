@@ -86,7 +86,7 @@ export const MottoCarousel = () => {
 
   return (
     <div 
-      className="relative w-full h-full min-h-[40vh] overflow-hidden"
+      className="relative w-full h-full min-h-[300px] overflow-hidden"
       style={{ perspective: '300px' }}
     >
       <div
