@@ -33,8 +33,8 @@ const Home = () => {
         <MottoCarousel />
       </main>
 
-      <footer className="pb-6 px-4 text-center">
-        <p className="text-sm md:text-base font-serious text-muted-foreground max-w-2xl mx-auto">
+      <footer className="pb-4 px-4 text-center">
+        <p className="text-xs font-serious text-green-600">
           If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
         </p>
       </footer>
