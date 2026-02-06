@@ -46,7 +46,11 @@ const Mission = () => {
             </p>
 
             <p>
-              ADHD also brought me a lot of WTF moments, some hilarious, some scary, some not so good, some teaching me a lesson, some absolutely epic, but always categorized as unexpected special case. Sometimes ADHD becomes overwhelming, so I started this page to be able to brain dump. Page plain and simple, no advices, no distractions, no resources, just people living with the same condition and sharing their brainy moments and feelings.
+              ADHD also brought me a lot of WTF moments, some hilarious, some scary, some not so good, some teaching me a lesson, some absolutely epic, but always categorized as unexpected special case.
+            </p>
+
+            <p>
+              Sometimes ADHD becomes overwhelming, so I started this page to be able to brain dump. Page plain and simple, no advices, no distractions, no resources, just people living with the same condition and sharing their brainy moments and feelings.
             </p>
           </div>
 
