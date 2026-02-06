@@ -23,7 +23,7 @@ const Contact = () => {
       </div>
 
       <div className="container mx-auto px-4 pt-32 md:pt-40 pb-12 max-w-3xl">
-        <h1 className="text-5xl md:text-7xl font-serious font-extrabold mb-8 text-center">
+        <h1 className="text-5xl md:text-7xl font-serious font-extrabold mb-12 md:mb-16 text-center">
           Contact & Disclaimer
         </h1>
 
