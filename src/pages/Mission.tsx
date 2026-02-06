@@ -73,7 +73,7 @@ const Mission = () => {
             faces and finding solidarity in shared experiences.
           </p>
           
-          <p className="text-center mt-8">
+          <p className="mt-8 font-bold">
             Welcome!
           </p>
         </div>
