@@ -122,7 +122,7 @@ export const MottoCarousel = () => {
   const allItems = [...mottos, ...mottos];
 
   return (
-    <div className="relative w-full h-[60vh] overflow-hidden star-wars-container">
+    <div className="relative w-full h-[60vh] overflow-hidden">
       {/* Fade overlay at top */}
       <div
         className="absolute top-0 left-0 right-0 h-16 z-10 pointer-events-none"
@@ -130,9 +130,9 @@ export const MottoCarousel = () => {
           background: "linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)",
         }}
       />
-      
+
       {/* The crawl container */}
-      <div 
+      <div
         className="absolute inset-0 flex justify-center overflow-hidden"
         style={{
           perspective: "400px",
@@ -140,7 +140,7 @@ export const MottoCarousel = () => {
         }}
       >
         <div
-          className="w-full absolute bottom-0"
+          className="w-full"
           style={{
             transformStyle: "preserve-3d",
             transform: "rotateX(25deg)",
@@ -148,14 +148,18 @@ export const MottoCarousel = () => {
           }}
         >
           <div
-            className="will-change-transform pt-8"
+            className="animate-crawl-stream will-change-transform"
             style={{
-              animation: `crawl-stream ${animationDuration}s linear infinite`,
+              animationDuration: `${animationDuration}s`,
               animationPlayState: isPaused ? "paused" : "running",
             }}
           >
             {allItems.map((m, index) => (
-              <MottoItem key={`${index < mottos.length ? "" : "dup-"}${m.id}`} m={m} keyPrefix={index < mottos.length ? "" : "dup-"} />
+              <MottoItem
+                key={`${index < mottos.length ? "" : "dup-"}${m.id}`}
+                m={m}
+                keyPrefix={index < mottos.length ? "" : "dup-"}
+              />
             ))}
           </div>
         </div>
