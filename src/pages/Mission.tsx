@@ -70,6 +70,10 @@ const Mission = () => {
             It's about acknowledging its many
             faces and finding solidarity in shared experiences.
           </p>
+          
+          <p className="text-center mt-8">
+            Welcome!
+          </p>
         </div>
       </div>
     </div>
