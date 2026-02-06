@@ -34,8 +34,8 @@ const Mission = () => {
             </p>
 
             <p>
-37:               My school years were full of annoyance and reprimanding anything I have done, which slowly over the years led to spiral of problems and unhealthy coping mechanisms. ADHD also brought me a lot of WTF moments, some hilarious, some scary, some not so good, some teaching me a lesson, some absolutely epic, but always categorized as unexpected special case.
-38:             </p>
+              My school years were full of annoyance and reprimanding anything I have done, which slowly over the years led to spiral of problems and unhealthy coping mechanisms. ADHD also brought me a lot of WTF moments, some hilarious, some scary, some not so good, some teaching me a lesson, some absolutely epic, but always categorized as unexpected special case.
+            </p>
 
             <p>
               Now I am trying to grow my self-esteem back, learning to drill out the best ADHD has to offer while taking care of my body and embracing this condition against all the odds and fun perks.
