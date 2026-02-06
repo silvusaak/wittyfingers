@@ -172,6 +172,8 @@ export const MottoCarousel = () => {
               animationPlayState: isPaused ? "paused" : "running",
             }}
           >
+            {/* Initial spacer to start first item at bottom of visible area */}
+            <div className="h-[50vh]" aria-hidden="true" />
             {mottos.map((m) => (
               <MottoItem key={m.id} m={m} />
             ))}
@@ -179,6 +181,8 @@ export const MottoCarousel = () => {
             {mottos.map((m) => (
               <MottoItem key={`dup-${m.id}`} m={m} keyPrefix="dup-" />
             ))}
+            {/* End spacer for seamless loop */}
+            <div className="h-[50vh]" aria-hidden="true" />
           </div>
         </div>
       </div>
