@@ -46,14 +46,8 @@ const Contact = () => {
 
           <section className="space-y-4">
             <h2 className="text-3xl md:text-4xl font-serious font-extrabold">
-              Contact
+              Contact: info@wittyfingers.com
             </h2>
-            <div>
-              <p>
-                For questions, concerns, or feedback about this project, please
-                reach out through appropriate channels.
-              </p>
-            </div>
           </section>
         </div>
       </div>
