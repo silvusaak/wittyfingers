@@ -51,7 +51,7 @@ export const MenuButton = () => {
             className="text-xl font-serious justify-start h-auto py-4"
             onClick={() => handleNavigation("/mission")}
           >
-            Mission
+            About & Mission
           </Button>
           <Button
             variant="ghost"
