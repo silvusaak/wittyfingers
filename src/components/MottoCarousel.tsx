@@ -88,7 +88,7 @@ export const MottoCarousel = () => {
   }
 
   const Stream = ({ ariaHidden = false }: { ariaHidden?: boolean }) => (
-    <div aria-hidden={ariaHidden} className="w-full py-[50vh]">
+    <div aria-hidden={ariaHidden} className="w-full pt-4 pb-16">
       {mottos.map((m) => (
         <div
           key={`${ariaHidden ? "dup-" : ""}${m.id}`}
