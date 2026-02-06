@@ -29,24 +29,19 @@ const Contact = () => {
 
         <div className="space-y-8 text-lg md:text-xl leading-relaxed font-handwritten">
           <section className="space-y-4">
-            <h2 className="text-3xl md:text-4xl font-serious font-extrabold">
-              Disclaimer
-            </h2>
-            <div className="space-y-4">
-              <p>
-                This website is a creative space for sharing personal experiences
-                related to ADHD. The mottos shared here are individual perspectives
-                and should not be considered medical advice or professional guidance.
-              </p>
-              <p>
-                If you're seeking help with ADHD or related concerns, please consult
-                with qualified healthcare professionals.
-              </p>
-              <p>
-                We reserve the right to moderate and remove content that is
-                inappropriate, offensive, or violates community guidelines.
-              </p>
-            </div>
+            <p>
+              This website is a creative space for sharing personal experiences
+              related to ADHD. The mottos shared here are individual perspectives
+              and should not be considered medical advice or professional guidance.
+            </p>
+            <p>
+              If you're seeking help with ADHD or related concerns, please consult
+              with qualified healthcare professionals.
+            </p>
+            <p>
+              We reserve the right to moderate and remove content that is
+              inappropriate, offensive, or violates community guidelines.
+            </p>
           </section>
 
           <section className="space-y-4">
