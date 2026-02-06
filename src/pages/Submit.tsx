@@ -134,7 +134,7 @@ const Submit = () => {
       </div>
 
       <div className="container mx-auto px-4 pt-32 md:pt-40 pb-12 max-w-2xl">
-        <h1 className="text-4xl md:text-6xl font-serious font-bold mb-8 text-center">
+        <h1 className="text-4xl md:text-6xl font-serious font-bold mb-12 md:mb-16 text-center">
           Submit your thoughts
         </h1>
 
