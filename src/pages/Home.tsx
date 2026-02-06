@@ -32,6 +32,12 @@ const Home = () => {
       <main className="flex-1 container mx-auto px-4 py-8 min-h-[50vh]">
         <MottoCarousel />
       </main>
+
+      <footer className="pb-6 px-4 text-center">
+        <p className="text-sm md:text-base font-serious text-muted-foreground max-w-2xl mx-auto">
+          If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
+        </p>
+      </footer>
     </div>
   );
 };
