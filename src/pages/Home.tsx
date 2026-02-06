@@ -29,11 +29,11 @@ const Home = () => {
         </h1>
       </header>
 
-      <main className="flex-1 container mx-auto px-4 py-8 min-h-[50vh]">
+      <main className="flex-1 container mx-auto px-4 py-8">
         <MottoCarousel />
       </main>
 
-      <footer className="pb-4 px-4 text-center">
+      <footer className="py-4 px-4 text-center shrink-0">
         <p className="text-xs font-serious text-green-600">
           If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
         </p>
