@@ -52,6 +52,16 @@ export const MottoCarousel = () => {
     setMottos(data || []);
   };
 
+  // Get dynamic font size based on text length
+  const getFontSize = (text: string) => {
+    const length = text.length;
+    if (length > 200) return 'text-lg md:text-xl lg:text-2xl';
+    if (length > 150) return 'text-xl md:text-2xl lg:text-3xl';
+    if (length > 100) return 'text-2xl md:text-3xl lg:text-4xl';
+    if (length > 50) return 'text-3xl md:text-4xl lg:text-5xl';
+    return 'text-4xl md:text-5xl lg:text-6xl';
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
@@ -98,11 +108,11 @@ export const MottoCarousel = () => {
           transform: isPaused ? 'rotateX(25deg)' : undefined,
         }}
       >
-        <div className="text-center max-w-3xl px-8 space-y-6">
-          <p className="text-4xl md:text-5xl lg:text-6xl leading-relaxed">
+        <div className="text-center max-w-4xl px-4 md:px-8 space-y-4">
+          <p className={`${getFontSize(currentMotto.motto_text)} leading-relaxed break-words`}>
             {currentMotto.motto_text}
           </p>
-          <div className="text-xl md:text-2xl text-muted-foreground">
+          <div className="text-base md:text-lg lg:text-xl text-muted-foreground">
             #{currentMotto.number} • {currentMotto.nickname || 'anonymous'} • [{currentMotto.created_at 
               ? format(new Date(currentMotto.created_at), "MMMM d")
               : ''}{currentMotto.timezone ? `, ${currentMotto.timezone}` : ''}]
