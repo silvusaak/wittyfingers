@@ -47,7 +47,7 @@ export const MottoCarousel = () => {
     const { data, error } = await supabase
       .from("mottos")
       .select("*")
-      .order("number", { ascending: false });
+      .order("number", { ascending: true });
 
     if (error) {
       console.error("Error fetching mottos:", error);
