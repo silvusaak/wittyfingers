@@ -220,6 +220,8 @@ const Submit = () => {
           </Button>
           <p className="text-xs text-muted-foreground text-center">
             Your nickname and timezone will be public with the corresponding date you submitted your answer.
+            <br />
+            If you do not provide a nickname, we will publish as 'anonymous'.
           </p>
         </form>
       </div>
