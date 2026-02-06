@@ -44,7 +44,7 @@ const Mission = () => {
             I do not consider ADHD a disfunction, disorder or anything to fix per se. I am trying to find balance between symptoms, its impacts, needed rest and use of superpowers. As being alone in all this sucks, I started this page to be able to brain dump, plain and simple, no advices, no resources, just people living with the same condition.
           </p>
           
-          <h2 className="text-3xl md:text-5xl font-serious font-extrabold mt-16 md:mt-20 mb-12 md:mb-16 text-center">
+          <h2 className="text-3xl md:text-5xl font-serious font-extrabold mt-20 md:mt-28 mb-14 md:mb-20 text-center">
             Mission
           </h2>
           
