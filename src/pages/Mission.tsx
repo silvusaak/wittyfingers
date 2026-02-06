@@ -27,55 +27,53 @@ const Mission = () => {
           About
         </h1>
         
-        <div className="space-y-6 text-lg md:text-xl leading-relaxed font-handwritten">
-          <p>
-            Hi, my name is Silvie and I have ADHD. I was diagnosed when I was 30 years old.
-          </p>
-          
-          <p>
-            My school years were full of annoyance and reprimanding anything I have done, which slowly over the years led to spiral of problems and unhealthy coping mechanisms.
-          </p>
-          
-          <p>
-            Now I am trying to grow my self-esteem back, learning to drill out the best ADHD has to offer while taking care of my body.
-          </p>
-          
-          <p>
-            I do not consider ADHD a disfunction, disorder or anything to fix per se. I am trying to find balance between symptoms, its impacts, needed rest and use of superpowers. As being alone in all this sucks, I started this page to be able to brain dump, plain and simple, no advices, no resources, just people living with the same condition.
-          </p>
-          
-          <h2 className="text-3xl md:text-5xl font-serious font-extrabold mt-40 md:mt-48 mb-14 md:mb-20 text-center">
+        <div className="text-lg md:text-xl leading-relaxed font-handwritten">
+          <div className="space-y-6">
+            <p>
+              Hi, my name is Silvie and I have ADHD. I was diagnosed when I was 30 years old.
+            </p>
+
+            <p>
+              My school years were full of annoyance and reprimanding anything I have done, which slowly over the years led to spiral of problems and unhealthy coping mechanisms.
+            </p>
+
+            <p>
+              Now I am trying to grow my self-esteem back, learning to drill out the best ADHD has to offer while taking care of my body.
+            </p>
+
+            <p>
+              I do not consider ADHD a disfunction, disorder or anything to fix per se. I am trying to find balance between symptoms, its impacts, needed rest and use of superpowers. As being alone in all this sucks, I started this page to be able to brain dump, plain and simple, no advices, no resources, just people living with the same condition.
+            </p>
+          </div>
+
+          {/* Extra separation ("three empty lines") before Mission */}
+          <div className="h-40 md:h-56" aria-hidden="true" />
+
+          <h2 className="text-3xl md:text-5xl font-serious font-extrabold mb-12 md:mb-16 text-center">
             Mission
           </h2>
-          
-          <p>
-            This space exists to capture the fleeting, often contradictory moments
-            of living with ADHD.
-          </p>
-          
-          <p>
-            Each submitted answer is a snapshot - a glimpse into how ADHD feels in a particular
-            moment. Some days it's chaos, some days it's clarity, some days it's
-            both at once.
-          </p>
-          
-          <p>
-            By sharing these moments, we create a collective understanding that
-            ADHD isn't just one thing - it's a spectrum of experiences, constantly
-            shifting and evolving.
-          </p>
-          
-          <p>
-            This is not about defining ADHD.
-          </p>
-          <p>
-            It's about acknowledging its many
-            faces and finding solidarity in shared experiences.
-          </p>
-          
-          <p className="mt-8 font-bold">
-            Welcome!
-          </p>
+
+          <div className="space-y-6">
+            <p>
+              This space exists to capture the fleeting, often contradictory moments of living with ADHD.
+            </p>
+
+            <p>
+              Each submitted answer is a snapshot - a glimpse into how ADHD feels in a particular moment. Some days it's chaos, some days it's clarity, some days it's both at once.
+            </p>
+
+            <p>
+              By sharing these moments, we create a collective understanding that ADHD isn't just one thing - it's a spectrum of experiences, constantly shifting and evolving.
+            </p>
+
+            <p>This is not about defining ADHD.</p>
+
+            <p>
+              It's about acknowledging its many faces and finding solidarity in shared experiences.
+            </p>
+
+            <p className="font-bold">Welcome!</p>
+          </div>
         </div>
       </div>
     </div>
