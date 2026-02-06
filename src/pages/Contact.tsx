@@ -45,7 +45,7 @@ const Contact = () => {
           </section>
 
           <section>
-            <h2 className="text-3xl md:text-4xl font-serious font-extrabold mb-12 md:mb-16">
+            <h2 className="text-3xl md:text-4xl font-serious font-extrabold mb-24 md:mb-32">
               Contact: info@wittyfingers.com
             </h2>
           </section>
