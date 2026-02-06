@@ -2,15 +2,17 @@ import { useEffect } from "react";
 import { MottoCarousel } from "@/components/MottoCarousel";
 import { MenuButton } from "@/components/MenuButton";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 import wtfLogo from "@/assets/wtf-logo.png";
 
 const Home = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      toast("Want to share your thoughts?", {
+      toast({
+        title: "Want to share your thoughts?",
         description: (
           <span>
             Submit{" "}
@@ -23,12 +25,11 @@ const Home = () => {
             !
           </span>
         ),
-        duration: 8000,
       });
     }, 2000);
 
     return () => clearTimeout(timer);
-  }, [navigate]);
+  }, [navigate, toast]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background relative">
