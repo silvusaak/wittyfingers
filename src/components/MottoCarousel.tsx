@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
@@ -32,7 +32,7 @@ export const MottoCarousel = () => {
           const incoming = payload.new as Motto;
           setMottos((prev) => {
             if (prev.some((m) => m.id === incoming.id)) return prev;
-            return [incoming, ...prev];
+            return [...prev, incoming];
           });
         },
       )
@@ -66,6 +66,21 @@ export const MottoCarousel = () => {
     if (length > 50) return "text-3xl md:text-4xl lg:text-5xl";
     return "text-4xl md:text-5xl lg:text-6xl";
   };
+
+  // Calculate estimated lines per motto and total reading time
+  // Roughly: 50 chars per line, 2 seconds per line + 2 seconds per motto for metadata
+  const animationDuration = useMemo(() => {
+    if (mottos.length === 0) return 30;
+    
+    let totalLines = 0;
+    mottos.forEach((m) => {
+      const textLines = Math.ceil(m.motto_text.length / 40); // ~40 chars per line on average
+      totalLines += textLines + 2; // +2 for metadata and spacing
+    });
+    
+    // 2 seconds per line, minimum 20 seconds
+    return Math.max(20, totalLines * 2);
+  }, [mottos]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -134,8 +149,9 @@ export const MottoCarousel = () => {
           }}
         >
           <div
-            className="animate-crawl-stream will-change-transform"
+            className="will-change-transform"
             style={{
+              animation: `crawl-stream ${animationDuration}s linear infinite`,
               animationPlayState: isPaused ? "paused" : "running",
             }}
           >
