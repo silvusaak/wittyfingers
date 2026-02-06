@@ -46,7 +46,7 @@ const Contact = () => {
 
           <section>
             <h2 className="text-3xl md:text-4xl font-serious font-extrabold mb-24 md:mb-32">
-              Contact: info@wittyfingers.com
+              Contact: <a href="mailto:info@wittyfingers.com" className="hover:underline">info@wittyfingers.com</a>
             </h2>
           </section>
         </div>
