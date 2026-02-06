@@ -38,7 +38,7 @@ const Mission = () => {
             </p>
 
             <p>
-              Now I am trying to grow my self-esteem back, learning to drill out the best ADHD has to offer while taking care of my body and embracing this condition against all the odds and fun perks.
+              Now I am trying to grow my self-esteem back, learning to drill out the best ADHD has to offer while taking care of my body and embracing this condition against all the odds and with the fun perks.
             </p>
 
             <p>
