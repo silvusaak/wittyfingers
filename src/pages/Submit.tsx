@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useToast, toast as globalToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import wtfLogo from "@/assets/wtf-logo.png";
 
@@ -16,10 +16,12 @@ const Submit = () => {
   const [website, setWebsite] = useState(""); // Honeypot field
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaQuestion, setCaptchaQuestion] = useState({ num1: 0, num2: 0, answer: 0 });
-  const { toast } = useToast();
+  const { toast, dismiss } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Dismiss any existing toasts when entering Submit page
+    dismiss();
     generateCaptcha();
   }, []);
 
