@@ -6,7 +6,7 @@ const Mission = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-background relative flex flex-col">
       <div className="absolute top-4 left-4 z-50">
         <button
           onClick={() => navigate("/")}
@@ -76,6 +76,12 @@ const Mission = () => {
           </div>
         </div>
       </div>
+      
+      <footer className="py-2 px-4 text-center shrink-0 mt-auto mb-16">
+        <p className="text-[10px] font-serious text-green-600">
+          If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
+        </p>
+      </footer>
     </div>
   );
 };
