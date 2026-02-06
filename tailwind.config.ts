@@ -113,10 +113,10 @@ export default {
         },
         "crawl-stream": {
           "0%": {
-            transform: "translateY(0%)",
+            transform: "translateY(100%)",
           },
           "100%": {
-            transform: "translateY(-50%)",
+            transform: "translateY(-100%)",
           },
         },
       },
@@ -125,7 +125,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in": "fade-in 0.5s ease-out",
         "crawl": "crawl 8s linear forwards",
-        "crawl-stream": "crawl-stream 90s linear infinite",
+        "crawl-stream": "crawl-stream 60s linear infinite",
       },
     },
   },

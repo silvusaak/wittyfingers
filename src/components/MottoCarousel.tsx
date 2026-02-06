@@ -88,39 +88,49 @@ export const MottoCarousel = () => {
   }
 
   const Stream = ({ ariaHidden = false }: { ariaHidden?: boolean }) => (
-    <div aria-hidden={ariaHidden} className="w-full pt-24 pb-24">
+    <div aria-hidden={ariaHidden} className="w-full py-[50vh]">
       {mottos.map((m) => (
         <div
           key={`${ariaHidden ? "dup-" : ""}${m.id}`}
-          className="text-center max-w-4xl mx-auto px-4 md:px-8"
+          className="text-center max-w-3xl mx-auto px-4 md:px-8 mb-16"
         >
           <p className={`${getFontSize(m.motto_text)} leading-relaxed break-words`}>
             {m.motto_text}
           </p>
-          <div className="mt-3 text-base md:text-lg lg:text-xl text-muted-foreground">
+          <div className="mt-4 text-base md:text-lg text-muted-foreground">
             #{m.number} • {m.nickname || "anonymous"} • [
             {m.created_at ? format(new Date(m.created_at), "MMMM d") : ""}
             {m.timezone ? `, ${m.timezone}` : ""}]
           </div>
-          {/* spacer so the loop feels like natural paragraphs */}
-          <div className="h-14" aria-hidden="true" />
         </div>
       ))}
     </div>
   );
 
   return (
-    <div
-      className="relative w-full h-full min-h-[300px] overflow-hidden"
-      style={{ perspective: "300px" }}
-    >
-      <div className="absolute inset-0 flex justify-center items-end">
+    <div className="relative w-full h-[60vh] overflow-hidden star-wars-container">
+      {/* Fade overlay at top */}
+      <div 
+        className="absolute top-0 left-0 right-0 h-32 z-10 pointer-events-none"
+        style={{
+          background: "linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)"
+        }}
+      />
+      
+      {/* The crawl container */}
+      <div 
+        className="absolute inset-0 flex justify-center overflow-hidden"
+        style={{
+          perspective: "400px",
+          perspectiveOrigin: "50% 0%",
+        }}
+      >
         <div
-          className="w-full"
+          className="w-full absolute bottom-0"
           style={{
             transformStyle: "preserve-3d",
-            transformOrigin: "50% 100%",
             transform: "rotateX(25deg)",
+            transformOrigin: "50% 100%",
           }}
         >
           <div
@@ -136,7 +146,7 @@ export const MottoCarousel = () => {
       </div>
 
       {isPaused && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-muted-foreground">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-sm text-muted-foreground z-20">
           Paused - Press Space to resume
         </div>
       )}
