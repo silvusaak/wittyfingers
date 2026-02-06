@@ -11,11 +11,18 @@ const Home = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       toast("Want to share your thoughts?", {
-        description: "Submit here!",
-        action: {
-          label: "Submit",
-          onClick: () => navigate("/submit"),
-        },
+        description: (
+          <span>
+            Submit{" "}
+            <button
+              onClick={() => navigate("/submit")}
+              className="underline font-bold hover:opacity-80"
+            >
+              here
+            </button>
+            !
+          </span>
+        ),
         duration: 8000,
       });
     }, 2000);
