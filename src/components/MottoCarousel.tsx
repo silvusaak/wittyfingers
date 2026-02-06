@@ -67,10 +67,9 @@ export const MottoCarousel = () => {
     return "text-4xl md:text-5xl lg:text-6xl";
   };
 
-  // Calculate estimated lines per motto and total reading time
-  // Roughly: 50 chars per line, 2 seconds per line + 2 seconds per motto for metadata
+  // Calculate animation duration: 1.5 seconds per line of text
   const animationDuration = useMemo(() => {
-    if (mottos.length === 0) return 30;
+    if (mottos.length === 0) return 20;
     
     let totalLines = 0;
     mottos.forEach((m) => {
@@ -78,8 +77,8 @@ export const MottoCarousel = () => {
       totalLines += textLines + 2; // +2 for metadata and spacing
     });
     
-    // 2 seconds per line, minimum 20 seconds
-    return Math.max(20, totalLines * 2);
+    // 1.5 seconds per line, minimum 15 seconds
+    return Math.max(15, totalLines * 1.5);
   }, [mottos]);
 
   useEffect(() => {
