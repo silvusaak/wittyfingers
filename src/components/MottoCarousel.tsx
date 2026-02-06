@@ -102,25 +102,24 @@ export const MottoCarousel = () => {
     );
   }
 
-  const Stream = ({ ariaHidden = false }: { ariaHidden?: boolean }) => (
-    <div aria-hidden={ariaHidden} className="w-full pt-4 pb-16">
-      {mottos.map((m) => (
-        <div
-          key={`${ariaHidden ? "dup-" : ""}${m.id}`}
-          className="text-center max-w-3xl mx-auto px-4 md:px-8 mb-16"
-        >
-          <p className={`${getFontSize(m.motto_text)} leading-relaxed break-words`}>
-            {m.motto_text}
-          </p>
-          <div className="mt-4 text-base md:text-lg text-muted-foreground">
-            #{m.number} • {m.nickname || "anonymous"} • [
-            {m.created_at ? format(new Date(m.created_at), "MMMM d") : ""}
-            {m.timezone ? `, ${m.timezone}` : ""}]
-          </div>
-        </div>
-      ))}
+  const MottoItem = ({ m, keyPrefix = "" }: { m: Motto; keyPrefix?: string }) => (
+    <div
+      key={`${keyPrefix}${m.id}`}
+      className="text-center max-w-3xl mx-auto px-4 md:px-8 mb-20"
+    >
+      <p className={`${getFontSize(m.motto_text)} leading-relaxed break-words`}>
+        {m.motto_text}
+      </p>
+      <div className="mt-4 text-base md:text-lg text-muted-foreground">
+        #{m.number} • {m.nickname || "anonymous"} • [
+        {m.created_at ? format(new Date(m.created_at), "MMMM d") : ""}
+        {m.timezone ? `, ${m.timezone}` : ""}]
+      </div>
     </div>
   );
+
+  // Create a seamless loop by duplicating content
+  const allItems = [...mottos, ...mottos];
 
   return (
     <div className="relative w-full h-[60vh] overflow-hidden star-wars-container">
@@ -149,14 +148,15 @@ export const MottoCarousel = () => {
           }}
         >
           <div
-            className="will-change-transform"
+            className="will-change-transform pt-8"
             style={{
               animation: `crawl-stream ${animationDuration}s linear infinite`,
               animationPlayState: isPaused ? "paused" : "running",
             }}
           >
-            <Stream />
-            <Stream ariaHidden />
+            {allItems.map((m, index) => (
+              <MottoItem key={`${index < mottos.length ? "" : "dup-"}${m.id}`} m={m} keyPrefix={index < mottos.length ? "" : "dup-"} />
+            ))}
           </div>
         </div>
       </div>
