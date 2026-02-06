@@ -58,8 +58,8 @@ const Home = () => {
         <MottoCarousel />
       </main>
 
-      <footer className="py-4 px-4 text-center shrink-0">
-        <p className="text-xs font-serious text-green-600">
+      <footer className="py-2 px-4 text-center shrink-0 mb-16">
+        <p className="text-[10px] font-serious text-green-600">
           If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
         </p>
       </footer>
