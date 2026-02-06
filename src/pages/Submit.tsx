@@ -105,7 +105,7 @@ const Submit = () => {
 
     toast({
       title: "Success!",
-      description: "Your motto has been submitted",
+      description: "Your answer has been submitted",
     });
 
     setNickname("");
