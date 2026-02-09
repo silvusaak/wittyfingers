@@ -1,61 +1,44 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
-interface Motto {
-  id: string;
-  number: number;
-  nickname: string;
+interface Answer {
+  id: number;
+  nickname: string | null;
   motto_text: string;
   created_at: string;
   timezone: string | null;
 }
 
+type Motto = Answer & { number: number };
+
 export const MottoCarousel = () => {
   const [mottos, setMottos] = useState<Motto[]>([]);
   const [isPaused, setIsPaused] = useState(false);
 
-  useEffect(() => {
-    fetchMottos();
-
-    // Subscribe to realtime updates
-    const channel = supabase
-      .channel("mottos-changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "mottos",
-        },
-        (payload) => {
-          const incoming = payload.new as Motto;
-          setMottos((prev) => {
-            if (prev.some((m) => m.id === incoming.id)) return prev;
-            return [...prev, incoming];
-          });
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
   const fetchMottos = async () => {
     const { data, error } = await supabase
-      .from("mottos")
+      .from("answers")
       .select("*")
-      .order("number", { ascending: true });
+      .order("created_at", { ascending: true });
 
     if (error) {
       console.error("Error fetching mottos:", error);
       return;
     }
 
-    setMottos(data || []);
+    const withNumbers: Motto[] =
+      (data || []).map((row, index) => ({
+        ...(row as Answer),
+        number: index + 1,
+      })) ?? [];
+
+    setMottos(withNumbers);
   };
+
+  useEffect(() => {
+    fetchMottos();
+  }, []);
 
   // Get dynamic font size based on text length
   const getFontSize = (text: string) => {
@@ -67,17 +50,16 @@ export const MottoCarousel = () => {
     return "text-4xl md:text-5xl lg:text-6xl";
   };
 
-  // Calculate animation duration: 1.5 seconds per line of text
+  // Estimate animation duration from total text length
   const animationDuration = useMemo(() => {
     if (mottos.length === 0) return 20;
-    
+
     let totalLines = 0;
     mottos.forEach((m) => {
-      const textLines = Math.ceil(m.motto_text.length / 40); // ~40 chars per line on average
-      totalLines += textLines + 2; // +2 for metadata and spacing
+      const textLines = Math.ceil(m.motto_text.length / 40);
+      totalLines += textLines + 2;
     });
-    
-    // 1.5 seconds per line, minimum 15 seconds
+
     return Math.max(15, totalLines * 1.5);
   }, [mottos]);
 
@@ -95,100 +77,54 @@ export const MottoCarousel = () => {
 
   if (mottos.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground text-2xl">
-        No mottos yet. Be the first to share!
+      <div className="h-[60vh] flex items-center justify-center text-center">
+        <p className="text-lg md:text-xl text-muted-foreground">
+          No mottos yet. Be the first to share!
+        </p>
       </div>
     );
   }
 
-  const MottoItem = ({ m, keyPrefix = "" }: { m: Motto; keyPrefix?: string }) => (
-    <div
-      key={`${keyPrefix}${m.id}`}
-      className="text-center max-w-3xl mx-auto px-4 md:px-8 mb-20"
-    >
-      <p className={`${getFontSize(m.motto_text)} leading-relaxed break-words`}>
+  const MottoItem = ({ m }: { m: Motto }) => (
+    <div className="mb-16">
+      <div
+        className={`font-handwritten leading-tight ${getFontSize(
+          m.motto_text
+        )}`}
+      >
         {m.motto_text}
-      </p>
-      <div className="mt-4 text-base md:text-lg text-muted-foreground">
-        #{m.number} • {m.nickname || "anonymous"} • [
-        {m.created_at ? format(new Date(m.created_at), "MMMM d") : ""}
-        {m.timezone ? `, ${m.timezone}` : ""}]
+      </div>
+      <div className="mt-4 text-xs md:text-sm text-muted-foreground font-serious">
+        #{m.number} • {m.nickname || "anonymous"} •{" "}
+        {m.created_at
+          ? format(new Date(m.created_at), "MMMM d")
+          : ""}
+        {m.timezone ? `, ${m.timezone}` : ""}
       </div>
     </div>
   );
 
-  // Loop divider component
-  const LoopDivider = () => (
-    <div className="flex items-center justify-center my-16 px-8">
-      <svg
-        viewBox="0 0 200 30"
-        className="w-48 md:w-64 h-8 text-muted-foreground/50"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <path
-          d="M0,15 Q50,0 100,15 T200,15"
-          strokeLinecap="round"
-        />
-        <circle cx="100" cy="15" r="4" fill="currentColor" stroke="none" />
-      </svg>
-    </div>
-  );
-
-  // Create a seamless loop by duplicating content
-  const allItems = [...mottos, ...mottos];
-
   return (
-    <div className="relative w-full h-[60vh] overflow-hidden">
-      {/* Fade overlay at top */}
-      <div
-        className="absolute top-0 left-0 right-0 h-16 z-10 pointer-events-none"
-        style={{
-          background: "linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 100%)",
-        }}
-      />
+    <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      {/* Fade overlay at top and bottom */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
-      {/* The crawl container */}
+      {/* Scrollable content */}
       <div
-        className="absolute inset-0 flex justify-center overflow-hidden"
-        style={{
-          perspective: "400px",
-          perspectiveOrigin: "50% 0%",
-        }}
+        className={`h-full overflow-y-auto pr-4 ${
+          isPaused ? "" : "animate-none"
+        }`}
       >
-        <div
-          className="w-full"
-          style={{
-            transformStyle: "preserve-3d",
-            transform: "rotateX(25deg)",
-            transformOrigin: "50% 100%",
-          }}
-        >
-          <div
-            className="animate-crawl-stream will-change-transform"
-            style={{
-              animationDuration: `${animationDuration}s`,
-              animationPlayState: isPaused ? "paused" : "running",
-            }}
-          >
-            {/* Initial spacer to start first item at bottom of visible area */}
-            <div className="h-[50vh]" aria-hidden="true" />
-            {mottos.map((m) => (
-              <MottoItem key={m.id} m={m} />
-            ))}
-            <LoopDivider />
-            {mottos.map((m) => (
-              <MottoItem key={`dup-${m.id}`} m={m} keyPrefix="dup-" />
-            ))}
-            {/* End spacer for seamless loop */}
-            <div className="h-[50vh]" aria-hidden="true" />
-          </div>
+        <div className="py-8">
+          {mottos.map((m) => (
+            <MottoItem key={m.id} m={m} />
+          ))}
         </div>
       </div>
 
       {isPaused && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-2xl md:text-3xl text-yellow-500 z-20">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs md:text-sm text-muted-foreground bg-background/80 px-3 py-1 rounded-full border">
           paused - press space to resume
         </div>
       )}
