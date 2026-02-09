@@ -10,7 +10,9 @@ interface Answer {
   timezone: string | null;
 }
 
-type Motto = Answer & { number: number };
+interface Motto extends Answer {
+  number: number;
+}
 
 export const MottoCarousel = () => {
   const [mottos, setMottos] = useState<Motto[]>([]);
@@ -27,11 +29,10 @@ export const MottoCarousel = () => {
       return;
     }
 
-    const withNumbers: Motto[] =
-      (data || []).map((row, index) => ({
-        ...(row as Answer),
-        number: index + 1,
-      })) ?? [];
+    const withNumbers: Motto[] = (data || []).map((row, index) => ({
+      ...(row as Answer),
+      number: index + 1,
+    }));
 
     setMottos(withNumbers);
   };
@@ -40,7 +41,6 @@ export const MottoCarousel = () => {
     fetchMottos();
   }, []);
 
-  // Get dynamic font size based on text length
   const getFontSize = (text: string) => {
     const length = text.length;
     if (length > 200) return "text-lg md:text-xl lg:text-2xl";
@@ -50,16 +50,13 @@ export const MottoCarousel = () => {
     return "text-4xl md:text-5xl lg:text-6xl";
   };
 
-  // Estimate animation duration from total text length
   const animationDuration = useMemo(() => {
     if (mottos.length === 0) return 20;
-
     let totalLines = 0;
     mottos.forEach((m) => {
       const textLines = Math.ceil(m.motto_text.length / 40);
       totalLines += textLines + 2;
     });
-
     return Math.max(15, totalLines * 1.5);
   }, [mottos]);
 
@@ -70,7 +67,6 @@ export const MottoCarousel = () => {
         setIsPaused((prev) => !prev);
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
@@ -96,38 +92,52 @@ export const MottoCarousel = () => {
       </div>
       <div className="mt-4 text-xs md:text-sm text-muted-foreground font-serious">
         #{m.number} • {m.nickname || "anonymous"} •{" "}
-        {m.created_at
-          ? format(new Date(m.created_at), "MMMM d")
-          : ""}
+        {m.created_at ? format(new Date(m.created_at), "MMMM d") : ""}
         {m.timezone ? `, ${m.timezone}` : ""}
       </div>
     </div>
   );
 
   return (
-    <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-      {/* Fade overlay at top and bottom */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
+    <>
+      <style>{`
+        @keyframes motto-crawl {
+          from { transform: translateY(0); }
+          to { transform: translateY(-50%); }
+        }
+        .motto-crawl-paused { animation-play-state: paused !important; }
+      `}</style>
+      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
-      {/* Scrollable content */}
-      <div
-        className={`h-full overflow-y-auto pr-4 ${
-          isPaused ? "" : "animate-none"
-        }`}
-      >
-        <div className="py-8">
-          {mottos.map((m) => (
-            <MottoItem key={m.id} m={m} />
-          ))}
+        <div
+          className="pr-4"
+          style={{
+            animation: isPaused
+              ? "none"
+              : `motto-crawl ${animationDuration}s linear infinite`,
+          }}
+        >
+          {/* Duplicated content for seamless loop */}
+          <div className="py-8">
+            {mottos.map((m) => (
+              <MottoItem key={`a-${m.id}`} m={m} />
+            ))}
+          </div>
+          <div className="py-8">
+            {mottos.map((m) => (
+              <MottoItem key={`b-${m.id}`} m={m} />
+            ))}
+          </div>
         </div>
+
+        {isPaused && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs md:text-sm text-muted-foreground bg-background/80 px-3 py-1 rounded-full border">
+            paused - press space to resume
+          </div>
+        )}
       </div>
-
-      {isPaused && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs md:text-sm text-muted-foreground bg-background/80 px-3 py-1 rounded-full border">
-          paused - press space to resume
-        </div>
-      )}
-    </div>
+    </>
   );
 };
