@@ -63,36 +63,31 @@ const Submit = () => {
       return;
     }
 
+    // Optional bot protection: if honeypot is filled, silently abort
+    if (website.trim() !== "") {
+      return;
+    }
+
     setIsSubmitting(true);
 
     // Get user's timezone
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     try {
-      const { data, error } = await supabase.functions.invoke('submit-motto', {
-        body: {
-          nickname: nickname.trim() || "anonymous",
-          motto_text: mottoText.trim(),
-          timezone: timezone,
-          captcha_num1: captchaQuestion.num1,
-          captcha_num2: captchaQuestion.num2,
-          captcha_answer: parseInt(captcha),
-          website: website, // Honeypot field
-        },
+      const { error } = await supabase.from("answers").insert({
+        nickname: nickname.trim() || "anonymous",
+        motto_text: mottoText.trim(),
+        timezone,
       });
 
       setIsSubmitting(false);
 
-      if (error || data?.error) {
-        const errorMessage = data?.error || "This didn't work, let's try again";
+      if (error) {
         toast({
           title: "Error",
-          description: errorMessage,
+          description: "This didn't work, let's try again",
           variant: "destructive",
         });
-        if (errorMessage.includes('captcha') || errorMessage.includes('Incorrect')) {
-          generateCaptcha();
-        }
         return;
       }
     } catch (err) {
@@ -114,7 +109,7 @@ const Submit = () => {
     setMottoText("");
     setCaptcha("");
     generateCaptcha();
-    
+
     setTimeout(() => navigate("/"), 1500);
   };
 
@@ -130,7 +125,7 @@ const Submit = () => {
           <span className="text-xs md:text-sm font-handwritten text-muted-foreground">wittyfingers.com</span>
         </button>
       </div>
-      
+
       <div className="absolute top-4 right-4 z-50">
         <MenuButton />
       </div>
@@ -227,7 +222,7 @@ const Submit = () => {
           </p>
         </form>
       </div>
-      
+
       <footer className="py-2 px-4 text-center shrink-0 mt-auto mb-16">
         <p className="text-[10px] font-serious text-green-600">
           If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
