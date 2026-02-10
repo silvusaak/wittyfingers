@@ -82,7 +82,7 @@ export const MottoCarousel = () => {
   }
 
   const MottoItem = ({ m }: { m: Motto }) => (
-    <div className="mb-16">
+      <div className="mb-16 text-center">
       <div
         className={`font-handwritten leading-tight ${getFontSize(
           m.motto_text
@@ -112,7 +112,7 @@ export const MottoCarousel = () => {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
         <div
-          className="pr-4"
+          className="pr-4 max-w-4xl mx-auto"
           style={{
             animation: isPaused
               ? "none"
