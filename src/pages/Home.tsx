@@ -55,7 +55,9 @@ const Home = () => {
       </header>
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        <MottoCarousel />
+<div className="max-w-4xl mx-auto text-center w-full">
+  <MottoCarousel />
+</div>
       </main>
 
       <footer className="py-2 px-4 text-center shrink-0 mb-16">
