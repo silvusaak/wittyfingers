@@ -26,9 +26,21 @@
   </head>
 
   <body>
-    <!-- GitHub Pages SPA redirect handler -->
+      <!-- GitHub Pages SPA redirect: run at root (custom domain) and at /wittyfingers/ (github.io) -->
+   <script type="text/javascript">
+     (function(l) {
+       if (l.search[1] !== '/') return;
+       var pathname = l.pathname;
+       var isRoot = pathname === '/' || pathname === '';
+       var isGithubPages = pathname === '/wittyfingers' || pathname === '/wittyfingers/';
+       if (!isRoot && !isGithubPages) return;
+       var decoded = l.search.slice(1).split('&').map(function(s) {
+         return s.replace(/~and~/g, '&');
+       }).join('?');
+       if (decoded.indexOf('/') !== 0) decoded = '/' + decoded;
+       var newPath = isGithubPages ? '/wittyfingers' + decoded : decoded;
+       window.history.replaceState(null, null, newPath + (l.hash || ''));
+     }(window.location));
+   </script>
+   <div id="root"></div>  
     
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
