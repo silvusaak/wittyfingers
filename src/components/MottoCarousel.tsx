@@ -22,14 +22,15 @@ export const MottoCarousel = () => {
     const { data, error } = await supabase
       .from("answers")
       .select("*")
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching mottos:", error);
       return;
     }
 
-    const withNumbers: Motto[] = (data || []).map((row, index) => ({
+    const list = data || [];
+    const withNumbers: Motto[] = list.map((row, index) => ({
       ...(row as Answer),
       number: index + 1,
     }));
@@ -82,7 +83,7 @@ export const MottoCarousel = () => {
   }
 
   const MottoItem = ({ m }: { m: Motto }) => (
-      <div className="mb-16 text-center">
+    <div className="mb-16 text-center">
       <div
         className={`font-handwritten leading-tight ${getFontSize(
           m.motto_text
@@ -107,19 +108,18 @@ export const MottoCarousel = () => {
         }
         .motto-crawl-paused { animation-play-state: paused !important; }
       `}</style>
-      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
+      <div className="relative h-[60vh] md:h-[70vh] overflow-hidden flex justify-center">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
         <div
-          className="pr-4 max-w-4xl mx-auto"
+          className="w-full max-w-4xl mx-auto px-4"
           style={{
             animation: isPaused
               ? "none"
               : `motto-crawl ${animationDuration}s linear infinite`,
           }}
         >
-          {/* Duplicated content for seamless loop */}
           <div className="py-8">
             {mottos.map((m) => (
               <MottoItem key={`a-${m.id}`} m={m} />
