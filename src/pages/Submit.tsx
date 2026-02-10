@@ -81,21 +81,21 @@ const Submit = () => {
 
       setIsSubmitting(false);
 
-      if (error) {
-  const msg = String(error?.message || error?.context?.body?.error || error);
-  if (msg.includes("per day") || msg.includes("one submission") || (error as { status?: number })?.status === 429) {
-    toast({
-      title: "One submission per day only",
-      description: "Only one submission per day is allowed. Please try again tomorrow.",
-      variant: "destructive",
-    });
-  } else {
-    toast({
-      title: "Error",
-      description: "This didn't work, let's try again",
-      variant: "destructive",
-    });
+    if (error) {
+  let msg = String(error?.message || "");
+  if (error?.context && typeof (error.context as any).json === "function") {
+    try {
+      const body = await (error.context as Response).json();
+      msg = body?.error || msg;
+    } catch (_) {}
   }
+  const isRateLimit = (error as { status?: number })?.status === 429 || msg.includes("per day") || msg.includes("one submission");
+  toast({
+    title: isRateLimit ? "One submission per day only" : "Error",
+    description: isRateLimit ? "Only one submission per day is allowed. Please try again tomorrow." : "This didn't work, let's try again",
+    variant: "destructive",
+  });
+  setIsSubmitting(false);
   return;
 }
 
