@@ -31,15 +31,19 @@ const Submit = () => {
     setCaptcha("");
   };
 
+  const showRateLimitToast = () => {
+    toast({
+      title: "One submission per day only",
+      description: "Only one submission per day is allowed. Please try again tomorrow.",
+      variant: "destructive",
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!mottoText.trim()) {
-      toast({
-        title: "Error",
-        description: "Please enter a motto",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Please enter a motto", variant: "destructive" });
       return;
     }
 
@@ -81,42 +85,32 @@ const Submit = () => {
 
       setIsSubmitting(false);
 
-    if (error) {
-  let msg = String(error?.message || "");
-  if (error?.context && typeof (error.context as any).json === "function") {
-    try {
-      const body = await (error.context as Response).json();
-      msg = body?.error || msg;
-    } catch (_) {}
-  }
-  const isRateLimit = (error as { status?: number })?.status === 429 || msg.includes("per day") || msg.includes("one submission");
-  toast({
-    title: isRateLimit ? "One submission per day only" : "Error",
-    description: isRateLimit ? "Only one submission per day is allowed. Please try again tomorrow." : "This didn't work, let's try again",
-    variant: "destructive",
-  });
-  setIsSubmitting(false);
-  return;
-}
+      if (error) {
+        let msg = String(error?.message || "");
+        if (error?.context && typeof (error.context as any).json === "function") {
+          try {
+            const body = await (error.context as Response).json();
+            msg = body?.error || msg;
+          } catch (_) {}
+        }
+        const is429 =
+          (error as { status?: number })?.status === 429 ||
+          msg.includes("per day") ||
+          msg.includes("one submission");
+        if (is429) showRateLimitToast();
+        else toast({ title: "Error", description: "This didn't work, let's try again", variant: "destructive" });
+        return;
+      }
 
-const errMsg = data?.error;
-if (errMsg) {
-  const msgStr = String(errMsg);
-  if (data?.status === 429 || msgStr.includes("per day") || msgStr.includes("one submission")) {
-    toast({
-      title: "One submission per day only",
-      description: "Only one submission per day is allowed. Please try again tomorrow.",
-      variant: "destructive",
-    });
-  } else {
-    toast({
-      title: "Error",
-      description: msgStr,
-      variant: "destructive",
-    });
-  }
-  return;
-}
+      if (data?.error) {
+        const msg = String(data.error);
+        if (msg.includes("per day") || msg.includes("one submission")) {
+          showRateLimitToast();
+        } else {
+          toast({ title: "Error", description: msg, variant: "destructive" });
+        }
+        return;
+      }
 
       const { count } = await supabase
         .from("answers")
@@ -138,11 +132,21 @@ if (errMsg) {
       setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       setIsSubmitting(false);
-      toast({
-        title: "Error",
-        description: "This didn't work, let's try again",
-        variant: "destructive",
-      });
+      const e = err as { status?: number; message?: string; context?: { json?: () => Promise<any> } };
+      let msg = String(e?.message || e);
+      if (e?.context?.json) {
+        try {
+          const body = await e.context.json();
+          msg = body?.error || msg;
+        } catch (_) {}
+      }
+      const is429 =
+        e?.status === 429 || msg.includes("per day") || msg.includes("one submission");
+      if (is429) {
+        showRateLimitToast();
+      } else {
+        toast({ title: "Error", description: "This didn't work, let's try again", variant: "destructive" });
+      }
     }
   };
 
@@ -216,7 +220,7 @@ if (errMsg) {
 
           <div className="space-y-2">
             <Label htmlFor="captcha" className="text-sm font-serious">
-              Solve this to prove you're human:
+              Solve this to prove you&apos;re human:
             </Label>
             <div className="flex items-center gap-3 p-3 bg-secondary border border-border rounded">
               <span className="text-lg font-handwritten">
@@ -255,6 +259,7 @@ if (errMsg) {
             answer. If you do not provide your nickname, we will publish as &apos;anonymous&apos;.
             <br />
             Only one submission per day per device is allowed.
+            <br />
             <br />
             Submissions are public, stored indefinitely and the provider reserves the right to
             moderate the content. By submitting you confirm you have read this note and agree to the
