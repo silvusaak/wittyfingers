@@ -82,31 +82,41 @@ const Submit = () => {
       setIsSubmitting(false);
 
       if (error) {
-        toast({
-          title: "Error",
-          description: "This didn't work, let's try again",
-          variant: "destructive",
-        });
-        return;
-      }
+  const msg = String(error?.message || error?.context?.body?.error || error);
+  if (msg.includes("per day") || msg.includes("one submission") || (error as { status?: number })?.status === 429) {
+    toast({
+      title: "One submission per day only",
+      description: "Only one submission per day is allowed. Please try again tomorrow.",
+      variant: "destructive",
+    });
+  } else {
+    toast({
+      title: "Error",
+      description: "This didn't work, let's try again",
+      variant: "destructive",
+    });
+  }
+  return;
+}
 
-      const errMsg = data?.error;
-      if (errMsg) {
-        if (data?.status === 429 || String(errMsg).includes("per day")) {
-  toast({
-    title: "One submission per day only",
-    description: "Only one submission per day is allowed. Come back tomorrow :) ",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Error",
-            description: errMsg,
-            variant: "destructive",
-          });
-        }
-        return;
-      }
+const errMsg = data?.error;
+if (errMsg) {
+  const msgStr = String(errMsg);
+  if (data?.status === 429 || msgStr.includes("per day") || msgStr.includes("one submission")) {
+    toast({
+      title: "One submission per day only",
+      description: "Only one submission per day is allowed. Please try again tomorrow.",
+      variant: "destructive",
+    });
+  } else {
+    toast({
+      title: "Error",
+      description: msgStr,
+      variant: "destructive",
+    });
+  }
+  return;
+}
 
       const { count } = await supabase
         .from("answers")
