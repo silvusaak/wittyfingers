@@ -5,29 +5,28 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { useToast, toast as globalToast } from "@/hooks/use-toast";
-import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate, Link } from "react-router-dom";
 import wtfLogo from "@/assets/wtf-logo.png";
 
 const Submit = () => {
   const [nickname, setNickname] = useState("");
   const [mottoText, setMottoText] = useState("");
   const [captcha, setCaptcha] = useState("");
-  const [website, setWebsite] = useState(""); // Honeypot field
+  const [website, setWebsite] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaQuestion, setCaptchaQuestion] = useState({ num1: 0, num2: 0, answer: 0 });
   const { toast, dismiss } = useToast();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Dismiss any existing toasts when entering Submit page
     dismiss();
     generateCaptcha();
   }, []);
 
   const generateCaptcha = () => {
-    const num1 = Math.floor(Math.random() * 10) + 1;
-    const num2 = Math.floor(Math.random() * 10) + 1;
+    const num1 = Math.floor(Math.random() * 90) + 10;
+    const num2 = Math.floor(Math.random() * 90) + 10;
     setCaptchaQuestion({ num1, num2, answer: num1 + num2 });
     setCaptcha("");
   };
@@ -53,7 +52,8 @@ const Submit = () => {
       return;
     }
 
-    if (parseInt(captcha) !== captchaQuestion.answer) {
+    const captchaNum = parseInt(captcha, 10);
+    if (Number.isNaN(captchaNum) || captchaNum !== captchaQuestion.answer) {
       toast({
         title: "Error",
         description: "Please answer the math problem correctly",
@@ -63,21 +63,20 @@ const Submit = () => {
       return;
     }
 
-    // Optional bot protection: if honeypot is filled, silently abort
     if (website.trim() !== "") {
       return;
     }
 
     setIsSubmitting(true);
-
-    // Get user's timezone
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
     try {
-      const { error } = await supabase.from("answers").insert({
-        nickname: nickname.trim() || "anonymous",
-        motto_text: mottoText.trim(),
-        timezone,
+      const { data, error } = await supabase.functions.invoke("submit-motto", {
+        body: {
+          nickname: nickname.trim() || "anonymous",
+          motto_text: mottoText.trim(),
+          timezone,
+        },
       });
 
       setIsSubmitting(false);
@@ -90,6 +89,43 @@ const Submit = () => {
         });
         return;
       }
+
+      const errMsg = data?.error;
+      if (errMsg) {
+        if (data?.status === 429 || String(errMsg).includes("per day")) {
+          toast({
+            title: "Limit reached",
+            description: "Maximum one submission per day per device. Try again tomorrow.",
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: errMsg,
+            variant: "destructive",
+          });
+        }
+        return;
+      }
+
+      const { count } = await supabase
+        .from("answers")
+        .select("*", { count: "exact", head: true });
+
+      toast({
+        title: "Success!",
+        description:
+          count != null
+            ? `Your submission is #${count}. You can look it up anytime with the search icon on the home page.`
+            : "Your answer has been submitted.",
+      });
+
+      setNickname("");
+      setMottoText("");
+      setCaptcha("");
+      generateCaptcha();
+
+      setTimeout(() => navigate("/"), 1500);
     } catch (err) {
       setIsSubmitting(false);
       toast({
@@ -97,26 +133,7 @@ const Submit = () => {
         description: "This didn't work, let's try again",
         variant: "destructive",
       });
-      return;
     }
-
-  const { count } = await supabase
-  .from("answers")
-  .select("*", { count: "exact", head: true });
-
-toast({
-  title: "Success!",
-  description: count != null
-    ? `Your submission is #${count}. You can look it up anytime with the search icon on the home page.`
-    : "Your answer has been submitted.",
-});
-
-setNickname("");
-setMottoText("");
-setCaptcha("");
-generateCaptcha();
-
-setTimeout(() => navigate("/"), 1500);
   };
 
   return (
@@ -128,7 +145,9 @@ setTimeout(() => navigate("/"), 1500);
           aria-label="Return to home"
         >
           <img src={wtfLogo} alt="WTF Logo" className="w-20 h-20 md:w-28 md:h-28" />
-          <span className="text-xs md:text-sm font-handwritten text-muted-foreground">wittyfingers.com</span>
+          <span className="text-xs md:text-sm font-handwritten text-muted-foreground">
+            wittyfingers.com
+          </span>
         </button>
       </div>
 
@@ -142,7 +161,6 @@ setTimeout(() => navigate("/"), 1500);
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Honeypot field - hidden from users, bots will fill it */}
           <div className="absolute -left-[9999px]" aria-hidden="true">
             <label htmlFor="website">Website</label>
             <input
@@ -221,17 +239,29 @@ setTimeout(() => navigate("/"), 1500);
           >
             {isSubmitting ? "Submitting..." : "Submit"}
           </Button>
-          <p className="text-xs text-muted-foreground text-center">
-            Your nickname and timezone will be public with the corresponding date you submitted your answer.
+
+          <p className="text-xs text-muted-foreground text-center space-y-2">
+            Your nickname and timezone will be public with the corresponding date you submitted your
+            answer. If you do not provide your nickname, we will publish as &apos;anonymous&apos;.
             <br />
-            If you do not provide your nickname, we will publish as 'anonymous'.
+            <br />
+            Submissions are public, stored indefinitely and the provider reserves the right to
+            moderate the content. By submitting you confirm you have read this note and agree to the
+            terms of the service.
+            <br />
+            For deleting your submission please{" "}
+            <Link to="/contact" className="underline font-medium">
+              contact us
+            </Link>
+            .
           </p>
         </form>
       </div>
 
       <footer className="py-2 px-4 text-center shrink-0 mt-auto mb-16">
         <p className="text-[10px] font-serious text-green-600">
-          If you or anyone close to you struggles with mental health, don't be ashamed to contact your local helpline for support.
+          If you or anyone close to you struggles with mental health, don&apos;t be ashamed to
+          contact your local helpline for support.
         </p>
       </footer>
     </div>
