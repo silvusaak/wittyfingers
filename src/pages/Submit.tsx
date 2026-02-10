@@ -100,17 +100,23 @@ const Submit = () => {
       return;
     }
 
-    toast({
-      title: "Success!",
-      description: "Your answer has been submitted",
-    });
+  const { count } = await supabase
+  .from("answers")
+  .select("*", { count: "exact", head: true });
 
-    setNickname("");
-    setMottoText("");
-    setCaptcha("");
-    generateCaptcha();
+toast({
+  title: "Success!",
+  description: count != null
+    ? `Your submission is #${count}. You can look it up anytime with the search icon on the home page.`
+    : "Your answer has been submitted.",
+});
 
-    setTimeout(() => navigate("/"), 1500);
+setNickname("");
+setMottoText("");
+setCaptcha("");
+generateCaptcha();
+
+setTimeout(() => navigate("/"), 1500);
   };
 
   return (
