@@ -17,7 +17,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-       <BrowserRouter basename={import.meta.env.BASE_URL}>
+          <BrowserRouter basename={window.location.pathname.startsWith("/wittyfingers") ? "/wittyfingers" : ""}>
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
