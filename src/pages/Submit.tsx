@@ -93,9 +93,9 @@ const Submit = () => {
       const errMsg = data?.error;
       if (errMsg) {
         if (data?.status === 429 || String(errMsg).includes("per day")) {
-          toast({
-            title: "Limit reached",
-            description: "Maximum one submission per day per device. Try again tomorrow.",
+  toast({
+    title: "One submission per day only",
+    description: "Only one submission per day is allowed. Come back tomorrow :) ",
             variant: "destructive",
           });
         } else {
@@ -244,6 +244,7 @@ const Submit = () => {
             Your nickname and timezone will be public with the corresponding date you submitted your
             answer. If you do not provide your nickname, we will publish as &apos;anonymous&apos;.
             <br />
+            Only one submission per day per device is allowed.
             <br />
             Submissions are public, stored indefinitely and the provider reserves the right to
             moderate the content. By submitting you confirm you have read this note and agree to the
