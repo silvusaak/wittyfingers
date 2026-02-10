@@ -22,7 +22,7 @@ export const MottoCarousel = () => {
     const { data, error } = await supabase
       .from("answers")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("created_at", { ascending: true });
 
     if (error) {
       console.error("Error fetching mottos:", error);
