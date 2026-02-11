@@ -35,7 +35,9 @@ jobs:
         env:
           VITE_SUPABASE_URL: https://cznvrcbeudiexenvogpu.supabase.co
           VITE_SUPABASE_PUBLISHABLE_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6bnZyY2JldWRpZXhlbnZvZ3B1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ1ODM1MzEsImV4cCI6MjA4MDE1OTUzMX0.LXLUVcBU_RTZalO5oIN5hMXbsf_QHAKVdSF_O-6362s
-
+      - name: Copy index to 404 for SPA routing
+        run: cp ./dist/index.html ./dist/404.html
+     
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
