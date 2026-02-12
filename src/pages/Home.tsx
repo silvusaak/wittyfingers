@@ -215,7 +215,7 @@ const Home = () => {
 
       <header className="pt-32 md:pt-40 pb-6 px-4 text-center">
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-serious font-bold">
-          What ADHD feels like today...
+          What having ADHD feels like today...
         </h1>
       </header>
 
