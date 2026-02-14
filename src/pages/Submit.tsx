@@ -112,9 +112,7 @@ const Submit = () => {
         return;
       }
 
-      const { count } = await supabase
-        .from("answers")
-        .select("*", { count: "exact", head: true });
+      const count = data?.count;
 
       toast({
         title: "Success!",
