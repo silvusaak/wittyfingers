@@ -52,14 +52,14 @@ export const MottoCarousel = () => {
   };
 
   const animationDuration = useMemo(() => {
-    if (mottos.length === 0) return 20;
-    let totalLines = 0;
-    mottos.forEach((m) => {
-      const textLines = Math.ceil(m.motto_text.length / 40);
-      totalLines += textLines + 2;
-    });
-    return Math.max(15, totalLines * 1.5);
-  }, [mottos]);
+  if (mottos.length === 0) return 10;
+  let totalLines = 0;
+  mottos.forEach((m) => {
+    const textLines = Math.ceil(m.motto_text.length / 40);
+    totalLines += textLines + 2;
+  });
+  return Math.max(8, totalLines * 0.8);
+}, [mottos]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
