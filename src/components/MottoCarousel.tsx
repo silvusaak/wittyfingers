@@ -52,13 +52,13 @@ export const MottoCarousel = () => {
   };
 
   const animationDuration = useMemo(() => {
-  if (mottos.length === 0) return 5;
+  if (mottos.length === 0) return 2;
   let totalLines = 0;
   mottos.forEach((m) => {
     const textLines = Math.ceil(m.motto_text.length / 40);
     totalLines += textLines + 2;
   });
-  return Math.max(4, totalLines * 0.4);
+  return Math.max(0.4, totalLines * 0.15);
 }, [mottos]);
 
   useEffect(() => {
