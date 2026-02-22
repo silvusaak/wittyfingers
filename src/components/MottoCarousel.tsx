@@ -104,7 +104,7 @@ export const MottoCarousel = () => {
       <style>{`
         @keyframes motto-crawl {
           from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(0, -33.333%, 0); }
+          to { transform: translate3d(0, -50%, 0); }
         }
         .motto-crawl-paused { animation-play-state: paused !important; }
       `}</style>
@@ -129,11 +129,6 @@ export const MottoCarousel = () => {
           <div className="py-8">
             {mottos.map((m) => (
               <MottoItem key={`b-${m.id}`} m={m} />
-            ))}
-          </div>
-          <div className="py-8">
-            {mottos.map((m) => (
-              <MottoItem key={`c-${m.id}`} m={m} />
             ))}
           </div>
         </div>
