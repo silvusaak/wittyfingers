@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import AutoScroll from "embla-carousel-auto-scroll";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
@@ -19,6 +17,8 @@ interface Motto extends Answer {
 export const MottoCarousel = () => {
   const [mottos, setMottos] = useState<Motto[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  const [blockHeight, setBlockHeight] = useState(0);
+  const blockRef = useRef<HTMLDivElement>(null);
 
   const fetchMottos = async () => {
     const { data, error } = await supabase
@@ -53,39 +53,36 @@ export const MottoCarousel = () => {
     return "text-4xl md:text-5xl lg:text-6xl";
   };
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    {
-      axis: "y",
-      loop: true,
-      align: "start",
-      duration: 30,
-    },
-    [AutoScroll({ speed: 1.5, startDelay: 500 })]
-  );
+  const animationDuration = useMemo(() => {
+    if (mottos.length === 0) return 8;
+    let totalLines = 0;
+    mottos.forEach((m) => {
+      const textLines = Math.ceil(m.motto_text.length / 40);
+      totalLines += textLines + 2;
+    });
+    return Math.max(8, totalLines * 0.15);
+  }, [mottos]);
 
   useEffect(() => {
-    if (!emblaApi) return;
-    emblaApi.plugins().autoScroll?.play();
-    return () => emblaApi.destroy();
-  }, [emblaApi]);
+    if (!blockRef.current || mottos.length === 0) return;
+    const el = blockRef.current;
+    const measure = () => setBlockHeight(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [mottos]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Space") {
         e.preventDefault();
-        setIsPaused((prev) => {
-          if (prev) {
-            emblaApi?.plugins().autoScroll?.play();
-          } else {
-            emblaApi?.plugins().autoScroll?.stop();
-          }
-          return !prev;
-        });
+        setIsPaused((prev) => !prev);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [emblaApi]);
+  }, []);
 
   if (mottos.length === 0) {
     return (
@@ -98,7 +95,7 @@ export const MottoCarousel = () => {
   }
 
   const MottoItem = ({ m }: { m: Motto }) => (
-    <div className="mb-16 text-center flex-[0_0_auto] min-h-0">
+    <div className="mb-16 text-center">
       <div
         className={`font-handwritten leading-tight ${getFontSize(
           m.motto_text
@@ -114,30 +111,42 @@ export const MottoCarousel = () => {
     </div>
   );
 
+  const scrollDistance = blockHeight > 0 ? blockHeight : 0;
+
   return (
     <>
+      <style>{`
+        @keyframes motto-crawl {
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(0, calc(-1 * var(--scroll-height, 0px)), 0); }
+        }
+      `}</style>
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden flex justify-center">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
         <div
-          className="embla w-full max-w-4xl overflow-hidden"
-          style={{ height: "100%" }}
+          className="w-full max-w-4xl mx-auto px-4"
+          style={
+            {
+              "--scroll-height": `${scrollDistance}px`,
+              animation: isPaused
+                ? "none"
+                : scrollDistance > 0
+                  ? `motto-crawl ${animationDuration}s linear infinite`
+                  : "none",
+            } as React.CSSProperties
+          }
         >
-          <div
-            ref={emblaRef}
-            className="embla__viewport h-full overflow-hidden"
-          >
-            <div
-              className="embla__container flex flex-col py-8"
-              style={{ touchAction: "pan-y pinch-zoom" }}
-            >
-              {mottos.map((m) => (
-                <div key={m.id} className="embla__slide flex-[0_0_auto]">
-                  <MottoItem m={m} />
-                </div>
-              ))}
-            </div>
+          <div ref={blockRef} className="py-8">
+            {mottos.map((m) => (
+              <MottoItem key={`a-${m.id}`} m={m} />
+            ))}
+          </div>
+          <div className="py-8">
+            {mottos.map((m) => (
+              <MottoItem key={`b-${m.id}`} m={m} />
+            ))}
           </div>
         </div>
 
