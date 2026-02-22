@@ -51,14 +51,14 @@ export const MottoCarousel = () => {
     return "text-4xl md:text-5xl lg:text-6xl";
   };
 
-  const animationDuration = useMemo(() => {
-  if (mottos.length === 0) return 2;
+ const animationDuration = useMemo(() => {
+  if (mottos.length === 0) return 1;
   let totalLines = 0;
   mottos.forEach((m) => {
     const textLines = Math.ceil(m.motto_text.length / 40);
     totalLines += textLines + 2;
   });
-  return Math.max(0.4, totalLines * 0.15);
+  return Math.max(1, totalLines * 0.04);
 }, [mottos]);
 
   useEffect(() => {
