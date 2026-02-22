@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { format } from "date-fns";
 
@@ -17,6 +17,11 @@ interface Motto extends Answer {
 export const MottoCarousel = () => {
   const [mottos, setMottos] = useState<Motto[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  const [blockHeight, setBlockHeight] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const blockRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const rafRef = useRef<number>();
 
   const fetchMottos = async () => {
     const { data, error } = await supabase
@@ -62,6 +67,43 @@ export const MottoCarousel = () => {
   }, [mottos]);
 
   useEffect(() => {
+    if (!blockRef.current || mottos.length === 0) return;
+    const ro = new ResizeObserver(() => {
+      if (blockRef.current) setBlockHeight(blockRef.current.offsetHeight);
+    });
+    ro.observe(blockRef.current);
+    setBlockHeight(blockRef.current.offsetHeight);
+    return () => ro.disconnect();
+  }, [mottos]);
+
+  const pixelsPerSecond = blockHeight > 0 ? blockHeight / animationDuration : 0;
+
+  useEffect(() => {
+    if (mottos.length === 0 || isPaused || pixelsPerSecond <= 0) return;
+
+    const scroll = () => {
+      const container = scrollRef.current;
+      const block = blockRef.current;
+      if (!container || !block) return;
+
+      const height = block.offsetHeight;
+      offsetRef.current += (pixelsPerSecond * 16) / 1000;
+
+      if (offsetRef.current >= height) {
+        offsetRef.current -= height;
+      }
+
+      container.style.transform = `translate3d(0, -${offsetRef.current}px, 0)`;
+      rafRef.current = requestAnimationFrame(scroll);
+    };
+
+    rafRef.current = requestAnimationFrame(scroll);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [mottos, isPaused, pixelsPerSecond]);
+
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Space") {
         e.preventDefault();
@@ -101,27 +143,16 @@ export const MottoCarousel = () => {
 
   return (
     <>
-      <style>{`
-        @keyframes motto-crawl {
-          from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(0, -50%, 0); }
-        }
-        .motto-crawl-paused { animation-play-state: paused !important; }
-      `}</style>
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden flex justify-center">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
         <div
-          className="w-full max-w-4xl mx-auto px-4"
-          style={{
-            animation: isPaused
-              ? "none"
-              : `motto-crawl ${animationDuration}s linear infinite`,
-            willChange: "transform",
-          }}
+          ref={scrollRef}
+          className="w-full max-w-4xl mx-auto px-4 will-change-transform"
+          style={{ transform: isPaused ? "translate3d(0, 0, 0)" : undefined }}
         >
-          <div className="py-8">
+          <div ref={blockRef} className="py-8">
             {mottos.map((m) => (
               <MottoItem key={`a-${m.id}`} m={m} />
             ))}
