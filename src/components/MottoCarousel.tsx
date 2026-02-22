@@ -19,6 +19,9 @@ export const MottoCarousel = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [blockHeight, setBlockHeight] = useState(0);
   const blockRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const rafRef = useRef<number>();
 
   const fetchMottos = async () => {
     const { data, error } = await supabase
@@ -54,13 +57,13 @@ export const MottoCarousel = () => {
   };
 
   const animationDuration = useMemo(() => {
-    if (mottos.length === 0) return 8;
+    if (mottos.length === 0) return 16;
     let totalLines = 0;
     mottos.forEach((m) => {
       const textLines = Math.ceil(m.motto_text.length / 40);
       totalLines += textLines + 2;
     });
-    return Math.max(8, totalLines * 0.15);
+    return Math.max(16, totalLines * 0.3);
   }, [mottos]);
 
   useEffect(() => {
@@ -72,6 +75,33 @@ export const MottoCarousel = () => {
     ro.observe(el);
     return () => ro.disconnect();
   }, [mottos]);
+
+  const pixelsPerSecond = blockHeight > 0 ? blockHeight / animationDuration : 0;
+
+  useEffect(() => {
+    if (mottos.length === 0 || isPaused || pixelsPerSecond <= 0) return;
+
+    const scroll = () => {
+      const container = scrollRef.current;
+      const block = blockRef.current;
+      if (!container || !block) return;
+
+      const height = block.offsetHeight;
+      offsetRef.current += (pixelsPerSecond * 16) / 1000;
+
+      if (offsetRef.current >= height) {
+        offsetRef.current -= height;
+      }
+
+      container.style.transform = `translate3d(0, -${offsetRef.current}px, 0)`;
+      rafRef.current = requestAnimationFrame(scroll);
+    };
+
+    rafRef.current = requestAnimationFrame(scroll);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [mottos, isPaused, pixelsPerSecond]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -111,32 +141,18 @@ export const MottoCarousel = () => {
     </div>
   );
 
-  const scrollDistance = blockHeight > 0 ? blockHeight : 0;
-
   return (
     <>
-      <style>{`
-        @keyframes motto-crawl {
-          from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(0, calc(-1 * var(--scroll-height, 0px)), 0); }
-        }
-      `}</style>
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden flex justify-center">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-background to-transparent z-10" />
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-background to-transparent z-10" />
 
         <div
+          ref={scrollRef}
           className="w-full max-w-4xl mx-auto px-4"
-          style={
-            {
-              "--scroll-height": `${scrollDistance}px`,
-              animation: isPaused
-                ? "none"
-                : scrollDistance > 0
-                  ? `motto-crawl ${animationDuration}s linear infinite`
-                  : "none",
-            } as React.CSSProperties
-          }
+          style={{
+            transform: `translate3d(0, -${offsetRef.current}px, 0)`,
+          }}
         >
           <div ref={blockRef} className="py-8">
             {mottos.map((m) => (
