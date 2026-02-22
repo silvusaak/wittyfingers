@@ -17,6 +17,7 @@ interface Motto extends Answer {
 export const MottoCarousel = () => {
   const [mottos, setMottos] = useState<Motto[]>([]);
   const [isPaused, setIsPaused] = useState(false);
+  const [pausedOffset, setPausedOffset] = useState(0);
   const [blockHeight, setBlockHeight] = useState(0);
   const blockRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -57,13 +58,13 @@ export const MottoCarousel = () => {
   };
 
   const animationDuration = useMemo(() => {
-    if (mottos.length === 0) return 16;
+    if (mottos.length === 0) return 32;
     let totalLines = 0;
     mottos.forEach((m) => {
       const textLines = Math.ceil(m.motto_text.length / 40);
       totalLines += textLines + 2;
     });
-    return Math.max(16, totalLines * 0.3);
+    return Math.max(32, totalLines * 0.6);
   }, [mottos]);
 
   useEffect(() => {
@@ -107,12 +108,19 @@ export const MottoCarousel = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === "Space") {
         e.preventDefault();
-        setIsPaused((prev) => !prev);
+        if (isPaused) {
+          setIsPaused(false);
+        } else {
+          setPausedOffset(offsetRef.current);
+          setIsPaused(true);
+        }
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isPaused]);
+
+  const displayOffset = isPaused ? pausedOffset : offsetRef.current;
 
   if (mottos.length === 0) {
     return (
@@ -149,9 +157,9 @@ export const MottoCarousel = () => {
 
         <div
           ref={scrollRef}
-          className="w-full max-w-4xl mx-auto px-4"
+          className="w-full max-w-4xl mx-auto px-4 will-change-transform"
           style={{
-            transform: `translate3d(0, -${offsetRef.current}px, 0)`,
+            transform: `translate3d(0, -${displayOffset}px, 0)`,
           }}
         >
           <div ref={blockRef} className="py-8">
