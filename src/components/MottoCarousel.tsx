@@ -51,15 +51,15 @@ export const MottoCarousel = () => {
     return "text-4xl md:text-5xl lg:text-6xl";
   };
 
- const animationDuration = useMemo(() => {
-  if (mottos.length === 0) return 6;
-  let totalLines = 0;
-  mottos.forEach((m) => {
-    const textLines = Math.ceil(m.motto_text.length / 40);
-    totalLines += textLines + 2;
-  });
-  return Math.max(6, totalLines * 0.12);
-}, [mottos]);
+  const animationDuration = useMemo(() => {
+    if (mottos.length === 0) return 6;
+    let totalLines = 0;
+    mottos.forEach((m) => {
+      const textLines = Math.ceil(m.motto_text.length / 40);
+      totalLines += textLines + 2;
+    });
+    return Math.max(6, totalLines * 0.12);
+  }, [mottos]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -103,9 +103,9 @@ export const MottoCarousel = () => {
     <>
       <style>{`
         @keyframes motto-crawl {
-  from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(0, -33.333%, 0); }
-}
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(0, -33.333%, 0); }
+        }
         .motto-crawl-paused { animation-play-state: paused !important; }
       `}</style>
       <div className="relative h-[60vh] md:h-[70vh] overflow-hidden flex justify-center">
@@ -115,28 +115,28 @@ export const MottoCarousel = () => {
         <div
           className="w-full max-w-4xl mx-auto px-4"
           style={{
-            style={{
-  animation: isPaused
-    ? "none"
-    : `motto-crawl ${animationDuration}s linear infinite`,
-  willChange: "transform",
-}}
+            animation: isPaused
+              ? "none"
+              : `motto-crawl ${animationDuration}s linear infinite`,
+            willChange: "transform",
+          }}
         >
           <div className="py-8">
-  {mottos.map((m) => (
-    <MottoItem key={`a-${m.id}`} m={m} />
-  ))}
-</div>
-<div className="py-8">
-  {mottos.map((m) => (
-    <MottoItem key={`b-${m.id}`} m={m} />
-  ))}
-</div>
-<div className="py-8">
-  {mottos.map((m) => (
-    <MottoItem key={`c-${m.id}`} m={m} />
-  ))}
-</div>
+            {mottos.map((m) => (
+              <MottoItem key={`a-${m.id}`} m={m} />
+            ))}
+          </div>
+          <div className="py-8">
+            {mottos.map((m) => (
+              <MottoItem key={`b-${m.id}`} m={m} />
+            ))}
+          </div>
+          <div className="py-8">
+            {mottos.map((m) => (
+              <MottoItem key={`c-${m.id}`} m={m} />
+            ))}
+          </div>
+        </div>
 
         {isPaused && (
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs md:text-sm text-muted-foreground bg-background/80 px-3 py-1 rounded-full border">
